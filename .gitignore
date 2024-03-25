@@ -1,0 +1,12 @@
+# Folders to ignore
+dist/
+node_modules/
+tests/e2e/reports/
+
+# local env files
+.env.local
+.env.*.local
+
+# dependencies
+package-lock.json
+yarn.lock
