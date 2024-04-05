@@ -17,6 +17,8 @@ import { CContainer } from '@coreui/vue'
 import AppFooter from '@/components/AppFooter.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
+import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/modules/users'
 
 export default {
   name: 'DashboardLayout',
@@ -25,6 +27,13 @@ export default {
     AppHeader,
     AppSidebar,
     CContainer,
+  },
+  setup() {
+    const userStore = useUserStore()
+
+    onMounted(() => {
+      userStore.getMe()
+    })
   },
 }
 </script>

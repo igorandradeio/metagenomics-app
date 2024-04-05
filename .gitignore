@@ -10,3 +10,4 @@ tests/e2e/reports/
 # dependencies
 package-lock.json
 yarn.lock
+.env

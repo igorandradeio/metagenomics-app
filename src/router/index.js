@@ -3,19 +3,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import SiteLayout from '@/layouts/SiteLayout.vue'
-import Login from '@/views/pages/Login.vue'
+import Login from '@/views/pages/auth/Login.vue'
 import Register from '@/views/pages/Register.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
     component: SiteLayout,
-    redirect: '/',
     children: [
       {
         path: '/',
-        name: 'Homepage',
+        name: 'homepage',
         component: () =>import('@/views/pages/site/Homepage.vue')
       }
     ]
@@ -32,13 +30,11 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
     component: DashboardLayout,
-    redirect: '/dashboard',
     children: [
       {
-        path: '/dashboard',
-        name: 'Dashboard_Home',
+        path: '',
+        name: 'dasboard.home',
         component: () => import('@/views/dashboard/Dashboard.vue'),
       },
       {
