@@ -99,6 +99,7 @@ router.beforeEach(async (to, _, next) => {
 
   if (routeName === 'homepage') {
     next()
+    return
   }
 
   if (token) {
