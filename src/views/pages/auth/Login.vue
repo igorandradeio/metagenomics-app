@@ -85,7 +85,7 @@
 <script>
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
-import { useUserStore } from '@/stores/modules/users'
+import { useUserStore } from '@/stores/users'
 
 export default {
   name: 'Login',
@@ -125,11 +125,13 @@ export default {
           })
           .catch((errorResponse) => {
             error.active = true
-            if (errorResponse.status == 401) {
+            error.message = 'Oops! Something went wrong'
+
+            if (!errorResponse) {
+              error.message = `We're not able to contact the server`
+            } else if (errorResponse.status === 401) {
               error.message = errorResponse.data
               error.status = errorResponse.status
-            } else {
-              error.message = 'Oops! Something went wrong'
             }
           })
           .finally(() => {

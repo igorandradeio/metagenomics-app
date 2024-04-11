@@ -25,5 +25,8 @@ export const useUserStore = defineStore('users', {
         this.user = response
       })
     },
+    async logout() {
+      return await AuthService.logout()
+    },
   },
 })

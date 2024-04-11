@@ -5,6 +5,10 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import SiteLayout from '@/layouts/SiteLayout.vue'
 import Login from '@/views/pages/auth/Login.vue'
 import Register from '@/views/pages/Register.vue'
+import ServerUnavailable from '@/views/pages/ServerUnavailable.vue'
+import { TOKEN_NAME } from '@/utils/constants'
+
+import { useUserStore } from '@/stores/users'
 
 const routes = [
   {
@@ -14,9 +18,9 @@ const routes = [
       {
         path: '/',
         name: 'homepage',
-        component: () =>import('@/views/pages/site/Homepage.vue')
-      }
-    ]
+        component: () => import('@/views/pages/site/Homepage.vue'),
+      },
+    ],
   },
   {
     path: '/login',
@@ -52,6 +56,11 @@ const routes = [
         name: 'Typography',
         component: () => import('@/views/theme/Typography.vue'),
       },
+      {
+        path: '/server-unavailable',
+        name: 'server.unavailable',
+        component: ServerUnavailable,
+      },
     ],
   },
   {
@@ -82,5 +91,42 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 })
+
+router.beforeEach(async (to, _, next) => {
+  const userStore = useUserStore()
+  const routeName = to.name
+  const token = localStorage.getItem(TOKEN_NAME)
+
+  if (routeName === 'homepage') {
+    next()
+  }
+
+  if (token) {
+    await userStore
+      .getMe()
+      .then(() => {
+        if (isLoginPage(routeName)) {
+          next({ name: 'dasboard.home' })
+        } else {
+          next()
+        }
+      })
+      .catch((error) => {
+        if (!isLoginPage(routeName)) {
+          next({ name: 'server.unavailable' })
+        } else {
+          next()
+        }
+      })
+  } else if (!isLoginPage(routeName)) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+})
+
+function isLoginPage(routeName) {
+  return routeName === 'login' || routeName === 'server.unavailable'
+}
 
 export default router

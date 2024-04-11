@@ -28,8 +28,10 @@ export default class AuthService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          localStorage.removeItem(TOKEN_NAME)
-          reject(error.response)
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem(TOKEN_NAME)
+          }
+          reject(error)
         })
     })
   }
@@ -37,9 +39,10 @@ export default class AuthService extends BaseService {
   static async logout() {
     return new Promise((resolve, reject) => {
       this.request({ auth: true })
-        .post('/logout')
+        .post('/logout/')
         .then(() => {
           localStorage.removeItem(TOKEN_NAME)
+          resolve('Logging out')
         })
         .catch((error) => reject(error.response))
     })
