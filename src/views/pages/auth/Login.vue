@@ -12,8 +12,8 @@
                   :validated="validatedForm"
                   @submit.prevent="handleSubmit"
                 >
-                  <h1>Login</h1>
-                  <p class="text-body-secondary">Sign In to your account</p>
+                  <h1>{{ $t('formLogin.signInTitle') }}</h1>
+                  <p class="text-body-secondary">{{ $t('formLogin.signInMessage') }}</p>
                   <CInputGroup class="mb-3">
                     <CInputGroupText>
                       <CIcon icon="cil-user" />
@@ -21,8 +21,8 @@
                     <CFormInput
                       type="email"
                       v-model="email"
-                      feedbackValid="Looks good!"
-                      feedbackInvalid="Please Enter a valid email address"
+                      :feedbackValid="$t('formLogin.feedbackValid')"
+                      :feedbackInvalid="$t('formLogin.invalidEmail')"
                       placeholder="E-mail"
                       name="email"
                       required
@@ -36,9 +36,8 @@
                       v-model="password"
                       name="password"
                       type="password"
-                      placeholder="Password"
-                      autocomplete="current-password"
-                      feedbackInvalid="Please enter your password"
+                      :placeholder="$t('formLogin.password')"
+                      :feedbackInvalid="$t('formLogin.invalidPassword')"
                       required
                     />
                   </CInputGroup>
@@ -52,13 +51,15 @@
                       <CButton :disabled="loading" color="primary" class="px-4" type="submit">
                         <span v-if="loading">
                           <CSpinner component="span" size="sm" aria-hidden="true" />
-                          Loading...</span
+                          Logging in...</span
                         >
                         <span v-else>Login</span>
                       </CButton>
                     </CCol>
                     <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0"> Forgot password? </CButton>
+                      <CButton color="link" class="px-0">
+                        {{ $t('formLogin.forgotPassword') }}
+                      </CButton>
                     </CCol>
                   </CRow>
                 </CForm>
@@ -67,10 +68,10 @@
             <CCard class="text-white bg-primary py-5" style="width: 44%">
               <CCardBody class="text-center">
                 <div>
-                  <h2>Sign up</h2>
-                  <p>Don't have an account ?</p>
+                  <h2>{{ $t('formLogin.signUpTitle') }}</h2>
+                  <p>{{ $t('formLogin.signUpMessage') }}</p>
                   <CButton @click="signup" color="light" variant="outline" class="mt-3">
-                    Register Now!
+                    {{ $t('formLogin.registerButton') }}
                   </CButton>
                 </div>
               </CCardBody>
@@ -86,11 +87,13 @@
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/users'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'Login',
 
   setup() {
+    const { t } = useI18n({ useScope: 'global' })
     const router = useRouter()
     const userStore = useUserStore()
     const error = reactive({
@@ -125,12 +128,12 @@ export default {
           })
           .catch((errorResponse) => {
             error.active = true
-            error.message = 'Oops! Something went wrong'
+            error.message = t('formLogin.genericError')
 
             if (!errorResponse) {
-              error.message = `We're not able to contact the server`
+              error.message = t('formLogin.networkError')
             } else if (errorResponse.status === 401) {
-              error.message = errorResponse.data
+              error.message = t('formLogin.passwordError')
               error.status = errorResponse.status
             }
           })
