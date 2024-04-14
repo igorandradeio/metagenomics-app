@@ -1,4 +1,16 @@
 export const en = {
+  dashboard: {
+    sidebar: {
+      project: 'Projects',
+      theme: 'Theme',
+      dashboard: 'Dashboard',
+      colors: 'Colors',
+      typography: 'Typography',
+    },
+    project: {
+      tableTitle: 'Projects',
+    },
+  },
   formLogin: {
     signInTitle: 'Sign In',
     signUpTitle: 'Sign up',
