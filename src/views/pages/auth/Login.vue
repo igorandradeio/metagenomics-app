@@ -110,12 +110,11 @@ export default {
 
     const handleSubmit = (event) => {
       const form = event.currentTarget
+      validatedForm.value = true
 
       if (form.checkValidity() === true) {
         event.preventDefault()
         event.stopPropagation()
-
-        validatedForm.value = true
         loading.value = true
 
         userStore
