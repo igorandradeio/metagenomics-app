@@ -124,7 +124,7 @@ export default {
             password: password.value,
           })
           .then((response) => {
-            router.push({ name: 'dasboard.home' })
+            router.push({ name: 'dashboard.home' })
           })
           .catch((errorResponse) => {
             error.active = true

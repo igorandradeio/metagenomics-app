@@ -33,7 +33,7 @@ export default {
       userStore
         .getMe()
         .then(() => {
-          return router.push({ name: 'dasboard.home' })
+          return router.push({ name: 'dashboard.home' })
         })
         .catch(() => {})
     })
