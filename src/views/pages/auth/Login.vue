@@ -122,7 +122,7 @@ export default {
             email: email.value,
             password: password.value,
           })
-          .then((response) => {
+          .then(() => {
             router.push({ name: 'dashboard.home' })
           })
           .catch((errorResponse) => {
@@ -133,6 +133,9 @@ export default {
               error.message = t('formLogin.networkError')
             } else if (errorResponse.status === 401) {
               error.message = t('formLogin.passwordError')
+              error.status = errorResponse.status
+            } else if (errorResponse.status === 404) {
+              error.message = t('formLogin.userNotFound')
               error.status = errorResponse.status
             }
           })
