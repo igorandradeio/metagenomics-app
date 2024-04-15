@@ -38,8 +38,18 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'dasboard.home',
+        name: 'dashboard.home',
         component: () => import('@/views/dashboard/Dashboard.vue'),
+      },
+      {
+        path: '/projects',
+        name: 'project.index',
+        component: () => import('@/views/dashboard/projects/ListProject.vue'),
+      },
+      {
+        path: '/project/new',
+        name: 'project.create',
+        component: () => import('@/views/dashboard/projects/CreateProject.vue'),
       },
       {
         path: '/theme',
@@ -107,7 +117,7 @@ router.beforeEach(async (to, _, next) => {
       .getMe()
       .then(() => {
         if (isLoginPage(routeName)) {
-          next({ name: 'dasboard.home' })
+          next({ name: 'dashboard.home' })
         } else {
           next()
         }
