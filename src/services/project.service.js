@@ -40,6 +40,43 @@ export default class ProjectService extends BaseService {
     })
   }
 
+  static async update(id, params) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .put(`/project/${id}/`, params)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  static async getById(id) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .get(`/project/${id}/`)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
   static async destroy(id) {
     const token = await localStorage.getItem(TOKEN_NAME)
 

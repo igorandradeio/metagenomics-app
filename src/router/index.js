@@ -43,13 +43,19 @@ const routes = [
       },
       {
         path: '/projects',
-        name: 'project.index',
+        name: 'projects.index',
         component: () => import('@/views/dashboard/projects/ListProject.vue'),
       },
       {
         path: '/project/new',
-        name: 'project.create',
+        name: 'projects.create',
         component: () => import('@/views/dashboard/projects/CreateProject.vue'),
+      },
+      {
+        path: '/project/:id/edit',
+        name: 'projects.edit',
+        component: () => import('@/views/dashboard/projects/EditProject.vue'),
+        props: true
       },
       {
         path: '/theme',

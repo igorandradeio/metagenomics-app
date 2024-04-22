@@ -3,7 +3,7 @@
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> Create new <strong>Project</strong> </CCardHeader>
+        <CCardHeader> Edit <strong>Project</strong> </CCardHeader>
         <CCardBody>
           <CForm
             class="row g-3 needs-validation"
@@ -60,18 +60,23 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
 import { onMounted, reactive, ref } from 'vue'
 import ProjectService from '@/services/project.service'
 import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: 'CreateProject',
+  name: 'EditProject',
   components: {
     Toast,
   },
-  setup() {
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
     const { t } = useI18n({ useScope: 'global' })
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
     const notification = ref()
@@ -79,8 +84,6 @@ export default {
     const sequencingMethodOptions = ref([defaultOptionValue])
     const sequencingReadTypeOptions = ref([defaultOptionValue])
     const loading = ref(false)
-    const router = useRouter()
-
     const formData = reactive({
       name: '',
       sequencing_method: null,
@@ -88,6 +91,14 @@ export default {
     })
 
     onMounted(() => {
+      ProjectService.getById(props.id)
+        .then((response) => {
+          formData.name = response.name
+          formData.sequencing_method = String(response.sequencing_method)
+          formData.sequencing_read_type = String(response.sequencing_read_type)
+        })
+        .catch((error) => error)
+
       ProjectService.getSequencingMethod()
         .then((response) => {
           sequencingMethodOptions.value.push(...response)
@@ -110,21 +121,16 @@ export default {
 
         loading.value = true
 
-        ProjectService.create({
-          name: formData.name,
-          sequencing_method: formData.sequencing_method,
-          sequencing_read_type: formData.sequencing_read_type,
-        })
-          .then((response) => {
+        ProjectService.update(props.id, { ...formData })
+          .then(() => {
             notification.value.toasts.push({
               color: 'success',
               title: t('notification.title.success'),
               content: t('notification.successfulMessage', {
                 entity: t('dashboard.sidebar.project.title'),
-                action: t('notification.actions.created'),
+                action: t('notification.actions.updated'),
               }),
             })
-            router.push({ name: 'projects.edit', params: { id: response.id } })
           })
           .catch(() => {
             notification.value.toasts.push({

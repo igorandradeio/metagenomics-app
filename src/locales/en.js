@@ -11,6 +11,16 @@ export const en = {
         index: 'My Projects',
         create: 'New Project',
       },
+      assembly: {
+        title: 'Assembly',
+        index: 'My Assemblies',
+        create: 'New Assembly',
+      },
+      sample: {
+        title: 'Sample',
+        index: 'My Samples',
+        create: 'New Samples',
+      },
       theme: 'Theme',
       dashboard: 'Dashboard',
       colors: 'Colors',

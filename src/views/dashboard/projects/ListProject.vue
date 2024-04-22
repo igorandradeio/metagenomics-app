@@ -1,5 +1,5 @@
 <template>
-  <Toast ref="notification" color="primary" title="Success!" content="This is a success message" />
+  <Toast ref="notification" />
   <CModal
     :visible="isModalVisible"
     @close="
@@ -56,7 +56,10 @@
                 <CTableDataCell>{{ project.date }}</CTableDataCell>
                 <CTableDataCell>
                   <div align="center">
-                    <CIcon :icon="cilPencil" size="lg" />
+                    <router-link :to="{ name: 'projects.edit', params: { id: project.id } }">
+                      <CIcon :icon="cilPencil" size="lg" />
+                    </router-link>
+
                     <CIcon :icon="cilTrash" size="lg" @click="openModal(project)" />
                   </div>
                 </CTableDataCell>
