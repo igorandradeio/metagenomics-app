@@ -41,8 +41,9 @@
           <CTable hover>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Accession</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Project name</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Samples</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Type</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Operation</CTableHeaderCell>
@@ -52,6 +53,7 @@
               <CTableRow v-for="project in projectsList" :key="project.id">
                 <CTableHeaderCell scope="row">{{ project.id }}</CTableHeaderCell>
                 <CTableDataCell>{{ project.name }}</CTableDataCell>
+                <CTableDataCell>{{ project.sample_count }}</CTableDataCell>
                 <CTableDataCell>{{ project.sequencing_read_type }}</CTableDataCell>
                 <CTableDataCell>{{ project.date }}</CTableDataCell>
                 <CTableDataCell>
