@@ -43,16 +43,36 @@
               </CFormSelect>
               <CFormFeedback invalid> Please, select an option. </CFormFeedback>
             </CCol>
-            <CCol :xs="12">
-              <CButton color="primary" type="submit">
-                <span v-if="loading">
-                  <CSpinner component="span" size="sm" aria-hidden="true" />
-                  Submit
-                </span>
-                <span v-else>Submit</span>
-              </CButton>
-            </CCol>
+            <CRow class="mt-4">
+              <CCol :xs="6">
+                <CButton color="primary" type="submit">
+                  <span v-if="loading">
+                    <CSpinner component="span" size="sm" aria-hidden="true" />
+                    Submit
+                  </span>
+                  <span v-else>Submit</span>
+                </CButton>
+              </CCol>
+              <CCol :xs="6">
+                <CButton color="danger" type="submit">
+                  <span v-if="loading">
+                    <CSpinner component="span" size="sm" aria-hidden="true" />
+                    Submit
+                  </span>
+                  <span v-else>Delele</span>
+                </CButton>
+              </CCol>
+            </CRow>
           </CForm>
+          <CRow class="mt-4">
+            <CCol :xs="12">
+              <router-link :to="{ name: 'projects.samples', params: { id: projectId } }">
+                <div class="d-grid gap-2">
+                  <CButton color="primary">Sample List</CButton>
+                </div>
+              </router-link>
+            </CCol>
+          </CRow>
         </CCardBody>
       </CCard>
     </CCol>
@@ -64,7 +84,6 @@ import { onMounted, reactive, ref } from 'vue'
 import ProjectService from '@/services/project.service'
 import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
-
 export default {
   name: 'EditProject',
   components: {
@@ -89,6 +108,8 @@ export default {
       sequencing_method: null,
       sequencing_read_type: null,
     })
+
+    const projectId = props.id
 
     onMounted(() => {
       ProjectService.getById(props.id)
@@ -152,6 +173,7 @@ export default {
       sequencingMethodOptions,
       sequencingReadTypeOptions,
       notification,
+      projectId,
     }
   },
 }

@@ -55,7 +55,13 @@ const routes = [
         path: '/project/:id/edit',
         name: 'projects.edit',
         component: () => import('@/views/dashboard/projects/EditProject.vue'),
-        props: true
+        props: true,
+      },
+      {
+        path: '/project/:id/samples',
+        name: 'projects.samples',
+        component: () => import('@/views/dashboard/samples/ListSample.vue'),
+        props: true,
       },
       {
         path: '/theme',
