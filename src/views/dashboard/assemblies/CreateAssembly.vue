@@ -3,7 +3,7 @@
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader><strong>Sample Upload</strong></CCardHeader>
+        <CCardHeader><strong> Assembly Upload</strong>{{}} </CCardHeader>
         <CCardBody>
           <CForm
             class="row g-3 needs-validation"
@@ -11,17 +11,17 @@
             :validated="validatedForm"
             @submit.prevent="handleSubmit"
           >
-            <div v-if="isSingleEnd">
+            <div>
               <CRow>
                 <CCol md="6">
                   <CCard class="border-top-primary mb-3 border-top-3" text-color="primary">
-                    <CCardHeader><strong>Single-end read file</strong></CCardHeader>
+                    <CCardHeader><strong>Assembled Metagenome File</strong></CCardHeader>
                     <CCardImage orientation="top" :src="fastaIcon" />
                     <CCardBody>
                       <CFormInput
+                        id="assembly-file"
                         type="file"
-                        aria-label="Single-end read file"
-                        @change="uploadFile"
+                        aria-label="Assembly upload"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
@@ -30,31 +30,6 @@
                 </CCol>
               </CRow>
             </div>
-            <div v-else>
-              <CRow :xs="{ cols: 1, gutter: 1 }" :md="{ cols: 2 }">
-                <CCol xs>
-                  <CCard class="border-top-primary mb-3 border-top-3" text-color="primary">
-                    <CCardHeader><strong>Forward Read File (R1)</strong></CCardHeader>
-                    <CCardImage orientation="top" :src="fastaIcon" />
-                    <CCardBody>
-                      <CFormInput type="file" aria-label="Forward Read File (R1)" required />
-                      <CFormFeedback invalid>This field is required</CFormFeedback>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
-                <CCol xs>
-                  <CCard class="border-top-primary mb-3 border-top-3" text-color="primary">
-                    <CCardHeader><strong>Reverse Read File (R2)</strong></CCardHeader>
-                    <CCardImage orientation="top" :src="fastaIcon" />
-                    <CCardBody>
-                      <CFormInput type="file" aria-label="Reverse Read File (R2)" required />
-                      <CFormFeedback invalid>This field is required</CFormFeedback>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
-              </CRow>
-            </div>
-
             <CCol :xs="12">
               <CButton color="primary" type="submit">
                 <span v-if="loading">
@@ -76,7 +51,6 @@ import { useRouter } from 'vue-router'
 import { computed, onMounted, reactive, ref } from 'vue'
 import SampleService from '@/services/sample.service'
 import ProjectService from '@/services/project.service'
-import fastaIcon from '@/assets/images/fasta.png'
 
 import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
@@ -100,15 +74,11 @@ export default {
     const sequencingMethodOptions = ref([defaultOptionValue])
     const sequencingReadTypeOptions = ref([defaultOptionValue])
     const loading = ref(false)
-    const projectId = props.id
 
     const project = reactive({
       name: '',
       sequencing_read_type: null,
     })
-
-    const r1File = ref(null)
-    const r2File = ref(null)
 
     const isSingleEnd = computed(() => {
       return project.sequencing_read_type == 1 ? true : false
@@ -124,13 +94,8 @@ export default {
         .catch((error) => error)
     })
 
-    const uploadFile = (event) => {
-      r1File.value = event.target.files[0]
-    }
-
     const handleSubmit = (event) => {
       const form = event.currentTarget
-
       validatedForm.value = true
       if (form.checkValidity() === true) {
         event.preventDefault()
@@ -138,17 +103,11 @@ export default {
 
         loading.value = true
 
-        const formData = new FormData()
-
-        formData.append('project', projectId)
-
-        console.log(r1File)
-
-        formData.append('file', r1File.value)
-
-        //formData.append('file', r2FileInput.value)
-
-        SampleService.create(formData)
+        ProjectService.create({
+          name: formData.name,
+          sequencing_method: formData.sequencing_method,
+          sequencing_read_type: formData.sequencing_read_type,
+        })
           .then((response) => {
             notification.value.toasts.push({
               color: 'success',
@@ -158,7 +117,7 @@ export default {
                 action: t('notification.actions.created'),
               }),
             })
-            //router.push({ name: 'projects.edit', params: { id: response.id } })
+            router.push({ name: 'projects.edit', params: { id: response.id } })
           })
           .catch(() => {
             notification.value.toasts.push({
@@ -181,10 +140,6 @@ export default {
       handleSubmit,
       project,
       isSingleEnd,
-      fastaIcon,
-      r1File,
-      r2File,
-      uploadFile,
     }
   },
 }

@@ -59,16 +59,34 @@
                     <CSpinner component="span" size="sm" aria-hidden="true" />
                     Submit
                   </span>
-                  <span v-else>Delele</span>
+                  <span v-else>Delete</span>
                 </CButton>
               </CCol>
             </CRow>
           </CForm>
           <CRow class="mt-4">
             <CCol :xs="12">
-              <router-link :to="{ name: 'projects.samples', params: { id: projectId } }">
+              <router-link :to="{ name: 'samples.index', params: { id: projectId } }">
                 <div class="d-grid gap-2">
                   <CButton color="primary">Sample List</CButton>
+                </div>
+              </router-link>
+            </CCol>
+          </CRow>
+          <CRow class="mt-4">
+            <CCol :xs="12">
+              <router-link :to="{ name: 'samples.create', params: { id: projectId } }">
+                <div class="d-grid gap-2">
+                  <CButton color="primary">Upload Sample</CButton>
+                </div>
+              </router-link>
+            </CCol>
+          </CRow>
+          <CRow class="mt-4">
+            <CCol :xs="12">
+              <router-link :to="{ name: 'assemblies.create', params: { id: projectId } }">
+                <div class="d-grid gap-2">
+                  <CButton color="primary">Upload Assembly</CButton>
                 </div>
               </router-link>
             </CCol>

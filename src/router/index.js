@@ -52,14 +52,26 @@ const routes = [
         component: () => import('@/views/dashboard/projects/CreateProject.vue'),
       },
       {
-        path: '/project/:id/edit',
+        path: '/project/:id/',
         name: 'projects.edit',
         component: () => import('@/views/dashboard/projects/EditProject.vue'),
         props: true,
       },
       {
+        path: '/project/:id/upload-samples',
+        name: 'samples.create',
+        component: () => import('@/views/dashboard/samples/CreateSample.vue'),
+        props: true,
+      },
+      {
+        path: '/project/:id/upload-assembly',
+        name: 'assemblies.create',
+        component: () => import('@/views/dashboard/assemblies/CreateAssembly.vue'),
+        props: true,
+      },
+      {
         path: '/project/:id/samples',
-        name: 'projects.samples',
+        name: 'samples.index',
         component: () => import('@/views/dashboard/samples/ListSample.vue'),
         props: true,
       },

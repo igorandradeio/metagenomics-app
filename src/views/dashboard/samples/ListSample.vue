@@ -17,9 +17,9 @@
                 <template #footer>
                   <CLink
                     class="fw-semibold font-xs text-body-secondary"
-                    :href="sample.file_path"
+                    href="#"
+                    @click="download(sample.id, sample.file_name)"
                     rel="noopener norefferer"
-                    target="_blank"
                   >
                     Download
                     <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
@@ -43,7 +43,7 @@ import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: 'UploadSample',
+  name: 'ListSample',
   components: {
     Toast,
   },
@@ -69,10 +69,27 @@ export default {
       SampleService.getSamplesByProject(projectId)
         .then((response) => {
           sampleList.value = response
-          console.log(sampleList)
         })
         .catch((error) => error)
     })
+
+    const download = (sampleId, fileName) => {
+      console.log('entrwei')
+      SampleService.download(sampleId)
+        .then((response) => {
+          // console.log(response)
+          // const contentDisposition = response.headers
+          // console.log(contentDisposition, 'aaaaaaaaaaaaa')
+          // Get the file blob from the response
+          const FILE = window.URL.createObjectURL(new Blob([response.data]))
+          const docUrl = document.createElement('x')
+          docUrl.href = FILE
+          docUrl.setAttribute('download', 'file.pdf')
+          document.body.appendChild(docUrl)
+          docUrl.click()
+        })
+        .catch((error) => console.error('Error downloading file:', error))
+    }
 
     const handleSubmit = (event) => {
       //   const form = event.currentTarget
@@ -117,6 +134,7 @@ export default {
       notification,
       handleSubmit,
       sampleList,
+      download,
     }
   },
 }

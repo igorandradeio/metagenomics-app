@@ -6,6 +6,11 @@ export default class Http {
     const token = localStorage.getItem(TOKEN_NAME)
 
     const headers = status.auth ? { Authorization: `TOKEN ${token}` } : {}
+
+    if (status.file) {
+      headers['Content-type'] = 'multipart/form-data'
+    }
+
     this.instance = axios.create({
       baseURL: API_URL,
       headers: headers,
