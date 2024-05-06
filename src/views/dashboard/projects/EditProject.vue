@@ -1,5 +1,4 @@
 <template>
-  <Toast ref="notification" />
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
@@ -54,13 +53,9 @@
                 </CButton>
               </CCol>
               <CCol :xs="6">
-                <CButton color="danger" type="submit">
-                  <span v-if="loading">
-                    <CSpinner component="span" size="sm" aria-hidden="true" />
-                    Submit
-                  </span>
-                  <span v-else>Delete</span>
-                </CButton>
+                <CButton color="danger" @click="deleteProject()">{{
+                  $t('modal.delete.button.confirm')
+                }}</CButton>
               </CCol>
             </CRow>
           </CForm>
@@ -98,15 +93,14 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 import { onMounted, reactive, ref } from 'vue'
 import ProjectService from '@/services/project.service'
-import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
+
 export default {
   name: 'EditProject',
-  components: {
-    Toast,
-  },
   props: {
     id: {
       type: String,
@@ -115,6 +109,8 @@ export default {
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
+    const router = useRouter()
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
     const notification = ref()
     const validatedForm = ref(false)
@@ -151,6 +147,25 @@ export default {
         .catch((error) => error)
     })
 
+    const deleteProject = () => {
+      ProjectService.destroy(projectId)
+        .then(() => {
+          toast.success(
+            t('notification.successfulMessage', {
+              entity: t('dashboard.sidebar.project.title'),
+              action: t('notification.actions.deleted'),
+            }),
+          )
+          router.push({ name: 'projects.index' })
+        })
+        .catch(() => {
+          toast.error(t('notification.errorMessage'))
+        })
+        .finally(() => {
+          isModalVisible.value = false
+        })
+    }
+
     const handleSubmit = (event) => {
       const form = event.currentTarget
       validatedForm.value = true
@@ -162,21 +177,15 @@ export default {
 
         ProjectService.update(props.id, { ...formData })
           .then(() => {
-            notification.value.toasts.push({
-              color: 'success',
-              title: t('notification.title.success'),
-              content: t('notification.successfulMessage', {
+            toast.success(
+              t('notification.successfulMessage', {
                 entity: t('dashboard.sidebar.project.title'),
                 action: t('notification.actions.updated'),
               }),
-            })
+            )
           })
           .catch(() => {
-            notification.value.toasts.push({
-              color: 'danger',
-              title: t('notification.title.error'),
-              content: t('notification.errorMessage'),
-            })
+            toast.error(t('notification.errorMessage'))
           })
           .finally(() => {
             loading.value = false
@@ -192,6 +201,7 @@ export default {
       sequencingReadTypeOptions,
       notification,
       projectId,
+      deleteProject,
     }
   },
 }

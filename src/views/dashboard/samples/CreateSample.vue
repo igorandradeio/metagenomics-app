@@ -1,5 +1,4 @@
 <template>
-  <Toast ref="notification" />
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
@@ -77,15 +76,11 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import SampleService from '@/services/sample.service'
 import ProjectService from '@/services/project.service'
 import fastaIcon from '@/assets/images/fasta.png'
-
-import Toast from '@/components/Toast.vue'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'CreateSample',
-  components: {
-    Toast,
-  },
   props: {
     id: {
       type: String,
@@ -94,6 +89,9 @@ export default {
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
+    const router = useRouter()
+
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
     const notification = ref()
     const validatedForm = ref(false)
@@ -142,30 +140,22 @@ export default {
 
         formData.append('project', projectId)
 
-        console.log(r1File)
-
         formData.append('file', r1File.value)
 
         //formData.append('file', r2FileInput.value)
 
         SampleService.create(formData)
           .then((response) => {
-            notification.value.toasts.push({
-              color: 'success',
-              title: t('notification.title.success'),
-              content: t('notification.successfulMessage', {
-                entity: t('dashboard.sidebar.project.title'),
+            toast.success(
+              t('notification.successfulMessage', {
+                entity: t('entity.sample'),
                 action: t('notification.actions.created'),
               }),
-            })
-            //router.push({ name: 'projects.edit', params: { id: response.id } })
+            )
+            router.push({ name: 'projects.edit', params: { id: projectId } })
           })
           .catch(() => {
-            notification.value.toasts.push({
-              color: 'danger',
-              title: t('notification.title.error'),
-              content: t('notification.errorMessage'),
-            })
+            toast.error(t('notification.errorMessage'))
           })
           .finally(() => {
             loading.value = false

@@ -9,6 +9,8 @@ import DocsExample from '@/components/DocsExample'
 import { createI18n } from 'vue-i18n'
 import { en } from '@/locales/en.js'
 import { pt_br } from '@/locales/pt_br.js'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 const languages = {
   en,
@@ -27,6 +29,8 @@ app.use(createPinia())
 app.use(router)
 app.use(CoreuiVue)
 app.use(i18n)
+app.use(Toast);
+
 app.provide('icons', icons)
 app.component('CIcon', CIcon)
 app.component('DocsExample', DocsExample)

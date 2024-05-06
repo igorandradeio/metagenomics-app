@@ -1,9 +1,8 @@
 <template>
-  <Toast ref="notification" />
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader><strong> Assembly Upload</strong>{{}} </CCardHeader>
+        <CCardHeader><strong>Assembly Upload</strong></CCardHeader>
         <CCardBody>
           <CForm
             class="row g-3 needs-validation"
@@ -15,13 +14,13 @@
               <CRow>
                 <CCol md="6">
                   <CCard class="border-top-primary mb-3 border-top-3" text-color="primary">
-                    <CCardHeader><strong>Assembled Metagenome File</strong></CCardHeader>
+                    <CCardHeader><strong>Metagenome-assembled</strong></CCardHeader>
                     <CCardImage orientation="top" :src="fastaIcon" />
                     <CCardBody>
                       <CFormInput
-                        id="assembly-file"
                         type="file"
-                        aria-label="Assembly upload"
+                        aria-label="Metagenome-assembled"
+                        @change="uploadFile"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
@@ -49,17 +48,14 @@
 <script>
 import { useRouter } from 'vue-router'
 import { computed, onMounted, reactive, ref } from 'vue'
-import SampleService from '@/services/sample.service'
+import assemblyService from '@/services/assembly.service'
 import ProjectService from '@/services/project.service'
-
-import Toast from '@/components/Toast.vue'
+import fastaIcon from '@/assets/images/fasta.png'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: 'CreateSample',
-  components: {
-    Toast,
-  },
+  name: 'CreateAssembly',
   props: {
     id: {
       type: String,
@@ -68,21 +64,20 @@ export default {
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
+    const router = useRouter()
+
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
-    const notification = ref()
     const validatedForm = ref(false)
-    const sequencingMethodOptions = ref([defaultOptionValue])
-    const sequencingReadTypeOptions = ref([defaultOptionValue])
     const loading = ref(false)
+    const projectId = props.id
 
     const project = reactive({
       name: '',
       sequencing_read_type: null,
     })
 
-    const isSingleEnd = computed(() => {
-      return project.sequencing_read_type == 1 ? true : false
-    })
+    const assembledFile = ref(null)
 
     onMounted(() => {
       ProjectService.getById(props.id)
@@ -94,8 +89,13 @@ export default {
         .catch((error) => error)
     })
 
+    const uploadFile = (event) => {
+      assembledFile.value = event.target.files[0]
+    }
+
     const handleSubmit = (event) => {
       const form = event.currentTarget
+
       validatedForm.value = true
       if (form.checkValidity() === true) {
         event.preventDefault()
@@ -103,28 +103,24 @@ export default {
 
         loading.value = true
 
-        ProjectService.create({
-          name: formData.name,
-          sequencing_method: formData.sequencing_method,
-          sequencing_read_type: formData.sequencing_read_type,
-        })
+        const formData = new FormData()
+
+        formData.append('project', projectId)
+        formData.append('file', assembledFile.value)
+
+        assemblyService
+          .create(formData)
           .then((response) => {
-            notification.value.toasts.push({
-              color: 'success',
-              title: t('notification.title.success'),
-              content: t('notification.successfulMessage', {
-                entity: t('dashboard.sidebar.project.title'),
+            toast.success(
+              t('notification.successfulMessage', {
+                entity: t('entity.assembly'),
                 action: t('notification.actions.created'),
               }),
-            })
-            router.push({ name: 'projects.edit', params: { id: response.id } })
+            )
+            router.push({ name: 'projects.edit', params: { id: projectId } })
           })
           .catch(() => {
-            notification.value.toasts.push({
-              color: 'danger',
-              title: t('notification.title.error'),
-              content: t('notification.errorMessage'),
-            })
+            toast.error(t('notification.errorMessage'))
           })
           .finally(() => {
             loading.value = false
@@ -134,12 +130,10 @@ export default {
     return {
       validatedForm,
       loading,
-      sequencingMethodOptions,
-      sequencingReadTypeOptions,
-      notification,
       handleSubmit,
       project,
-      isSingleEnd,
+      fastaIcon,
+      uploadFile,
     }
   },
 }

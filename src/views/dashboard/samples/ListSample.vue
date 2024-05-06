@@ -35,18 +35,12 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
 import { onMounted, reactive, ref } from 'vue'
 import SampleService from '@/services/sample.service'
-
-import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ListSample',
-  components: {
-    Toast,
-  },
   props: {
     id: {
       type: String,
@@ -61,7 +55,6 @@ export default {
     const sequencingMethodOptions = ref([defaultOptionValue])
     const sequencingReadTypeOptions = ref([defaultOptionValue])
     const loading = ref(false)
-    const router = useRouter()
     const projectId = props.id
     const sampleList = ref([])
 
@@ -74,13 +67,8 @@ export default {
     })
 
     const download = (sampleId, fileName) => {
-      console.log('entrwei')
       SampleService.download(sampleId)
         .then((response) => {
-          // console.log(response)
-          // const contentDisposition = response.headers
-          // console.log(contentDisposition, 'aaaaaaaaaaaaa')
-          // Get the file blob from the response
           const FILE = window.URL.createObjectURL(new Blob([response.data]))
           const docUrl = document.createElement('x')
           docUrl.href = FILE
@@ -91,48 +79,12 @@ export default {
         .catch((error) => console.error('Error downloading file:', error))
     }
 
-    const handleSubmit = (event) => {
-      //   const form = event.currentTarget
-      //   validatedForm.value = true
-      //   if (form.checkValidity() === true) {
-      //     event.preventDefault()
-      //     event.stopPropagation()
-      //     loading.value = true
-      //     ProjectService.create({
-      //       name: formData.name,
-      //       sequencing_method: formData.sequencing_method,
-      //       sequencing_read_type: formData.sequencing_read_type,
-      //     })
-      //       .then((response) => {
-      //         notification.value.toasts.push({
-      //           color: 'success',
-      //           title: t('notification.title.success'),
-      //           content: t('notification.successfulMessage', {
-      //             entity: t('dashboard.sidebar.project.title'),
-      //             action: t('notification.actions.created'),
-      //           }),
-      //         })
-      //         router.push({ name: 'projects.edit', params: { id: response.id } })
-      //       })
-      //       .catch(() => {
-      //         notification.value.toasts.push({
-      //           color: 'danger',
-      //           title: t('notification.title.error'),
-      //           content: t('notification.errorMessage'),
-      //         })
-      //       })
-      //       .finally(() => {
-      //         loading.value = false
-      //       })
-      //   }
-    }
     return {
       validatedForm,
       loading,
       sequencingMethodOptions,
       sequencingReadTypeOptions,
       notification,
-      handleSubmit,
       sampleList,
       download,
     }

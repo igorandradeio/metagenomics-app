@@ -3,6 +3,8 @@ import { errorMessages } from 'vue/compiler-sfc'
 export const en = {
   entity: {
     project: 'project',
+    sample: 'sample',
+    assembly: 'assembly',
   },
   dashboard: {
     sidebar: {
@@ -15,11 +17,6 @@ export const en = {
         title: 'Assembly',
         index: 'My Assemblies',
         create: 'New Assembly',
-      },
-      sample: {
-        title: 'Sample',
-        index: 'My Samples',
-        create: 'New Samples',
       },
       theme: 'Theme',
       dashboard: 'Dashboard',

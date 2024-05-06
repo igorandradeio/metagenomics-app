@@ -1,5 +1,4 @@
 <template>
-  <Toast ref="notification" />
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
@@ -63,23 +62,22 @@
 import { useRouter } from 'vue-router'
 import { onMounted, reactive, ref } from 'vue'
 import ProjectService from '@/services/project.service'
-import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'CreateProject',
-  components: {
-    Toast,
-  },
   setup() {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
+    const router = useRouter()
+
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
     const notification = ref()
     const validatedForm = ref(false)
     const sequencingMethodOptions = ref([defaultOptionValue])
     const sequencingReadTypeOptions = ref([defaultOptionValue])
     const loading = ref(false)
-    const router = useRouter()
 
     const formData = reactive({
       name: '',
@@ -116,22 +114,16 @@ export default {
           sequencing_read_type: formData.sequencing_read_type,
         })
           .then((response) => {
-            notification.value.toasts.push({
-              color: 'success',
-              title: t('notification.title.success'),
-              content: t('notification.successfulMessage', {
+            toast.success(
+              t('notification.successfulMessage', {
                 entity: t('dashboard.sidebar.project.title'),
                 action: t('notification.actions.created'),
               }),
-            })
+            )
             router.push({ name: 'projects.edit', params: { id: response.id } })
           })
           .catch(() => {
-            notification.value.toasts.push({
-              color: 'danger',
-              title: t('notification.title.error'),
-              content: t('notification.errorMessage'),
-            })
+            toast.error(t('notification.errorMessage'))
           })
           .finally(() => {
             loading.value = false

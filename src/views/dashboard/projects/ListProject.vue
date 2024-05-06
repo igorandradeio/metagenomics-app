@@ -1,5 +1,4 @@
 <template>
-  <Toast ref="notification" />
   <CModal
     :visible="isModalVisible"
     @close="
@@ -86,20 +85,19 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import ProjectService from '@/services/project.service'
 import { cilTrash, cilPencil } from '@coreui/icons'
-import Toast from '@/components/Toast.vue'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'ListProject',
-  components: {
-    Toast,
-  },
-
   setup() {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
+    const router = useRouter()
     const notification = ref()
     const projectsList = ref('')
     const isModalVisible = ref(false)
@@ -116,21 +114,15 @@ export default {
     const deleteProject = () => {
       ProjectService.destroy(projectIdToDelete.value)
         .then(() => {
-          notification.value.toasts.push({
-            color: 'success',
-            title: t('notification.title.success'),
-            content: t('notification.successfulMessage', {
+          toast.success(
+            t('notification.successfulMessage', {
               entity: t('dashboard.sidebar.project.title'),
               action: t('notification.actions.deleted'),
             }),
-          })
+          )
         })
         .catch(() => {
-          notification.value.toasts.push({
-            color: 'danger',
-            title: t('notification.title.error'),
-            content: t('notification.errorMessage'),
-          })
+          toast.error(t('notification.errorMessage'))
         })
         .finally(() => {
           isModalVisible.value = false
