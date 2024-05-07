@@ -2,14 +2,14 @@
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> <strong>Sample List</strong> </CCardHeader>
+        <CCardHeader> <strong>Assembly List</strong> </CCardHeader>
         <CCardBody>
           <CRow :xs="{ gutter: 4 }">
-            <CCol :sm="6" :xl="6" :xxl="6" v-for="sample in sampleList" :key="sample.id">
+            <CCol :sm="6" :xl="6" :xxl="6" :key="assembly.id">
               <CWidgetStatsF
                 color="primary"
-                :title="'Date: ' + sample.date"
-                :value="sample.file_name"
+                :title="'Date: ' + assembly.date"
+                :value="assembly.file_name"
               >
                 <template #icon>
                   <CIcon icon="cil-file" size="xl" />
@@ -18,7 +18,7 @@
                   <CLink
                     class="fw-semibold font-xs text-body-secondary"
                     href="#"
-                    @click="download(sample.id, sample.file_name)"
+                    @click="download(assembly.id, assembly.file_name)"
                     rel="noopener norefferer"
                   >
                     Download
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import SampleService from '@/services/sample.service'
+import { onMounted, reactive, ref } from 'vue'
+import AssemblyService from '@/services/assembly.service'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: 'ListSample',
+  name: 'ListAssembly',
   props: {
     id: {
       type: String,
@@ -51,18 +51,18 @@ export default {
     const { t } = useI18n({ useScope: 'global' })
     const loading = ref(false)
     const projectId = props.id
-    const sampleList = ref([])
+    const assembly = ref([])
 
     onMounted(() => {
-      SampleService.getSamplesByProject(projectId)
+      AssemblyService.getAssemblyByProject(projectId)
         .then((response) => {
-          sampleList.value = response
+          assembly.value = response
         })
         .catch((error) => error)
     })
 
-    const download = (sampleId, fileName) => {
-      SampleService.download(sampleId)
+    const download = (assemblyId, fileName) => {
+      AssemblyService.download(assemblyId)
         .then((response) => {
           const FILE = window.URL.createObjectURL(new Blob([response.data]))
           const docUrl = document.createElement('x')
@@ -76,7 +76,7 @@ export default {
 
     return {
       loading,
-      sampleList,
+      assembly,
       download,
     }
   },

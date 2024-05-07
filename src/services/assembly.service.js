@@ -17,4 +17,44 @@ export default class AssemblyService extends BaseService {
         })
     })
   }
+
+  static async getAssemblyByProject(projectId) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .get(`/project/${projectId}/assembly/`)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  static async download(id) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .get(`/samples/${id}/download/`, {
+          responseType: 'blob',
+        })
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

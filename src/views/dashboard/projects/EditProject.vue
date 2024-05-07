@@ -70,6 +70,15 @@
           </CRow>
           <CRow class="mt-4">
             <CCol :xs="12">
+              <router-link :to="{ name: 'assembly.index', params: { id: projectId } }">
+                <div class="d-grid gap-2">
+                  <CButton color="primary">Assembly List</CButton>
+                </div>
+              </router-link>
+            </CCol>
+          </CRow>
+          <CRow class="mt-4">
+            <CCol :xs="12">
               <router-link :to="{ name: 'samples.create', params: { id: projectId } }">
                 <div class="d-grid gap-2">
                   <CButton color="primary">Upload Sample</CButton>

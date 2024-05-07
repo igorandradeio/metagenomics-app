@@ -76,6 +76,12 @@ const routes = [
         props: true,
       },
       {
+        path: '/project/:id/assembly',
+        name: 'assembly.index',
+        component: () => import('@/views/dashboard/assemblies/ListAssembly.vue'),
+        props: true,
+      },
+      {
         path: '/theme',
         name: 'Theme',
         redirect: '/theme/typography',
