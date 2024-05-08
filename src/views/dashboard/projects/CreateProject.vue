@@ -42,15 +42,17 @@
               </CFormSelect>
               <CFormFeedback invalid> Please, select an option. </CFormFeedback>
             </CCol>
-            <CCol :xs="12">
-              <CButton color="primary" type="submit">
-                <span v-if="loading">
-                  <CSpinner component="span" size="sm" aria-hidden="true" />
-                  Submit
-                </span>
-                <span v-else>Submit</span>
-              </CButton>
-            </CCol>
+            <CRow class="mt-4">
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <CButton color="primary" type="submit">
+                  <span v-if="loading">
+                    <CSpinner component="span" size="sm" aria-hidden="true" />
+                    Submitting
+                  </span>
+                  <span v-else>Submit</span>
+                </CButton>
+              </div>
+            </CRow>
           </CForm>
         </CCardBody>
       </CCard>
