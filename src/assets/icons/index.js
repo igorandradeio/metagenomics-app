@@ -81,6 +81,8 @@ import {
   cilXCircle,
   cilFolderOpen,
   cilTrash,
+  cilFindInPage,
+  cilCloudUpload
 } from '@coreui/icons'
 
 export const iconsSet = Object.assign(
@@ -141,6 +143,8 @@ export const iconsSet = Object.assign(
     cilXCircle,
     cilFolderOpen,
     cilTrash,
+    cilFindInPage,
+    cilCloudUpload
   },
   {
     cifUs,

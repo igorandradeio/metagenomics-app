@@ -1,8 +1,39 @@
 <template>
+  <CModal
+    :visible="isModalVisible"
+    @close="
+      () => {
+        isModalVisible = false
+      }
+    "
+    aria-labelledby="LiveDemoExampleLabel"
+  >
+    <CModalHeader>
+      <CModalTitle id="LiveDemoExampleLabel">{{
+        $t('modal.delete.title', { entity: $t('entity.project') })
+      }}</CModalTitle>
+    </CModalHeader>
+    <CModalBody>{{ $t('modal.delete.text', { entity: $t('entity.project') }) }}</CModalBody>
+    <CModalFooter>
+      <CButton
+        color="secondary"
+        @click="
+          () => {
+            isModalVisible = false
+          }
+        "
+      >
+        {{ $t('modal.delete.button.cancel') }}
+      </CButton>
+      <CButton color="danger" @click="deleteProject()">{{
+        $t('modal.delete.button.confirm')
+      }}</CButton>
+    </CModalFooter>
+  </CModal>
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> Edit <strong>Project</strong> </CCardHeader>
+        <CCardHeader><strong>Edit Project</strong> </CCardHeader>
         <CCardBody>
           <CForm
             class="row g-3 needs-validation"
@@ -43,62 +74,26 @@
               <CFormFeedback invalid> Please, select an option. </CFormFeedback>
             </CCol>
             <CRow class="mt-4">
-              <CCol :xs="6">
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <CButton color="danger" class="me-md-2" @click="openModal()">{{
+                  $t('modal.delete.button.confirm')
+                }}</CButton>
                 <CButton color="primary" type="submit">
                   <span v-if="loading">
                     <CSpinner component="span" size="sm" aria-hidden="true" />
-                    Submit
+                    Submitting
                   </span>
                   <span v-else>Submit</span>
                 </CButton>
-              </CCol>
-              <CCol :xs="6">
-                <CButton color="danger" @click="deleteProject()">{{
-                  $t('modal.delete.button.confirm')
-                }}</CButton>
-              </CCol>
+              </div>
             </CRow>
           </CForm>
-          <CRow class="mt-4">
-            <CCol :xs="12">
-              <router-link :to="{ name: 'samples.index', params: { id: projectId } }">
-                <div class="d-grid gap-2">
-                  <CButton color="primary">Sample List</CButton>
-                </div>
-              </router-link>
-            </CCol>
-          </CRow>
-          <CRow class="mt-4">
-            <CCol :xs="12">
-              <router-link :to="{ name: 'assembly.index', params: { id: projectId } }">
-                <div class="d-grid gap-2">
-                  <CButton color="primary">Assembly List</CButton>
-                </div>
-              </router-link>
-            </CCol>
-          </CRow>
-          <CRow class="mt-4">
-            <CCol :xs="12">
-              <router-link :to="{ name: 'samples.create', params: { id: projectId } }">
-                <div class="d-grid gap-2">
-                  <CButton color="primary">Upload Sample</CButton>
-                </div>
-              </router-link>
-            </CCol>
-          </CRow>
-          <CRow class="mt-4">
-            <CCol :xs="12">
-              <router-link :to="{ name: 'assemblies.create', params: { id: projectId } }">
-                <div class="d-grid gap-2">
-                  <CButton color="primary">Upload Assembly</CButton>
-                </div>
-              </router-link>
-            </CCol>
-          </CRow>
         </CCardBody>
       </CCard>
     </CCol>
   </CRow>
+  <ListSample :id="projectId" />
+  <ListAssembly :id="projectId" />
 </template>
 
 <script>
@@ -107,9 +102,15 @@ import { onMounted, reactive, ref } from 'vue'
 import ProjectService from '@/services/project.service'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
+import ListSample from '@/views/dashboard/samples/ListSample.vue'
+import ListAssembly from '@/views/dashboard/assemblies/ListAssembly.vue'
 
 export default {
   name: 'EditProject',
+  components: {
+    ListSample,
+    ListAssembly,
+  },
   props: {
     id: {
       type: String,
@@ -121,7 +122,6 @@ export default {
     const toast = useToast()
     const router = useRouter()
     const defaultOptionValue = { label: 'Choose', value: '', disabled: true, selected: true }
-    const notification = ref()
     const validatedForm = ref(false)
     const sequencingMethodOptions = ref([defaultOptionValue])
     const sequencingReadTypeOptions = ref([defaultOptionValue])
@@ -132,6 +132,8 @@ export default {
       sequencing_read_type: null,
     })
 
+    const isModalVisible = ref(false)
+
     const projectId = props.id
 
     onMounted(() => {
@@ -141,7 +143,11 @@ export default {
           formData.sequencing_method = String(response.sequencing_method)
           formData.sequencing_read_type = String(response.sequencing_read_type)
         })
-        .catch((error) => error)
+        .catch((error) => {
+          if (error.status === 404) {
+            router.push({ name: 'projects.index' })
+          }
+        })
 
       ProjectService.getSequencingMethod()
         .then((response) => {
@@ -201,6 +207,11 @@ export default {
           })
       }
     }
+
+    const openModal = () => {
+      isModalVisible.value = true
+    }
+
     return {
       validatedForm,
       handleSubmit,
@@ -208,9 +219,10 @@ export default {
       formData,
       sequencingMethodOptions,
       sequencingReadTypeOptions,
-      notification,
       projectId,
       deleteProject,
+      openModal,
+      isModalVisible,
     }
   },
 }

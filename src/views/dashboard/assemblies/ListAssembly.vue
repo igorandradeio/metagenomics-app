@@ -4,7 +4,7 @@
       <CCard class="mb-4">
         <CCardHeader> <strong>Assembly List</strong> </CCardHeader>
         <CCardBody>
-          <CRow :xs="{ gutter: 4 }">
+          <CRow v-if="hasAssembly" :md="{ gutter: 4 }">
             <CCol :sm="6" :xl="6" :xxl="6" :key="assembly.id">
               <CWidgetStatsF
                 color="primary"
@@ -28,6 +28,34 @@
               </CWidgetStatsF>
             </CCol>
           </CRow>
+          <CRow v-else :md="{ gutter: 4 }">
+            <CCol :md="6">
+              <CCard class="mb-3" color="info" text-color="white">
+                <CCardBody>
+                  <CCardText
+                    ><CIcon icon="cil-find-in-page" size="xl" />
+                    <strong> You don't have any assembly yet </strong>
+                    <hr />
+                    <small> When you upload/run, you'll see it here</small>
+                  </CCardText>
+                </CCardBody>
+              </CCard>
+            </CCol>
+            <CCol :md="6">
+              <router-link :to="{ name: 'assemblies.create', params: { id: projectId } }">
+                <CCard class="mb-3" color="success" text-color="white">
+                  <CCardBody>
+                    <CCardText
+                      ><CIcon icon="cil-cloud-upload" size="xl" />
+                      <strong> Upload your assembly manually </strong>
+                      <hr />
+                      <small> Add a new assembly manually</small>
+                    </CCardText>
+                  </CCardBody>
+                </CCard>
+              </router-link>
+            </CCol>
+          </CRow>
         </CCardBody>
       </CCard>
     </CCol>
@@ -43,7 +71,6 @@ export default {
   name: 'ListAssembly',
   props: {
     id: {
-      type: String,
       required: true,
     },
   },
@@ -52,10 +79,12 @@ export default {
     const loading = ref(false)
     const projectId = props.id
     const assembly = ref([])
+    const hasAssembly = ref(false)
 
     onMounted(() => {
       AssemblyService.getAssemblyByProject(projectId)
         .then((response) => {
+          hasAssembly.value = true
           assembly.value = response
         })
         .catch((error) => error)
@@ -78,6 +107,8 @@ export default {
       loading,
       assembly,
       download,
+      hasAssembly,
+      projectId,
     }
   },
 }
