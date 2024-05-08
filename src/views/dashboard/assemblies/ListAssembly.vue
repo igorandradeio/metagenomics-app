@@ -30,12 +30,11 @@
               </CCol>
             </CRow>
             <CRow class="mt-3">
-              <CCol :md="6">
+              <CCol :md="4">
                 <router-link :to="{ name: 'assemblies.create', params: { id: projectId } }">
                   <div class="d-grid gap-2">
-                    <CButton color="primary"
-                      ><CIcon icon="cil-cloud-upload" size="xl" /> Upload your assembly
-                      manually</CButton
+                    <CButton color="info" variant="outline"
+                      ><CIcon icon="cil-cloud-upload" size="xl" /> Resend assembly manually</CButton
                     >
                   </div>
                 </router-link>
@@ -58,7 +57,7 @@
             </CRow>
             <CRow v-else>
               <CCol :md="6">
-                <CCard class="mb-3" color="info" text-color="white">
+                <CCard class="mb-3 border-primary" color="light" text-color="primary">
                   <CCardBody>
                     <CCardText
                       ><CIcon icon="cil-find-in-page" size="xl" />
