@@ -20,7 +20,7 @@
                       <CFormInput
                         type="file"
                         aria-label="Single-end read file"
-                        @change="uploadFile"
+                        @change="uploadFileR1"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
@@ -36,7 +36,12 @@
                     <CCardHeader><strong>Forward Read File (R1)</strong></CCardHeader>
                     <CCardImage orientation="top" :src="fastaIcon" />
                     <CCardBody>
-                      <CFormInput type="file" aria-label="Forward Read File (R1)" required />
+                      <CFormInput
+                        type="file"
+                        aria-label="Forward Read File (R1)"
+                        @change="uploadFileR1"
+                        required
+                      />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
                     </CCardBody>
                   </CCard>
@@ -46,7 +51,12 @@
                     <CCardHeader><strong>Reverse Read File (R2)</strong></CCardHeader>
                     <CCardImage orientation="top" :src="fastaIcon" />
                     <CCardBody>
-                      <CFormInput type="file" aria-label="Reverse Read File (R2)" required />
+                      <CFormInput
+                        type="file"
+                        aria-label="Reverse Read File (R2)"
+                        @change="uploadFileR2"
+                        required
+                      />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
                     </CCardBody>
                   </CCard>
@@ -83,7 +93,6 @@ export default {
   name: 'CreateSample',
   props: {
     id: {
-      type: String,
       required: true,
     },
   },
@@ -122,8 +131,12 @@ export default {
         .catch((error) => error)
     })
 
-    const uploadFile = (event) => {
+    const uploadFileR1 = (event) => {
       r1File.value = event.target.files[0]
+    }
+
+    const uploadFileR2 = (event) => {
+      r2File.value = event.target.files[0]
     }
 
     const handleSubmit = (event) => {
@@ -135,14 +148,16 @@ export default {
         event.stopPropagation()
 
         loading.value = true
-
         const formData = new FormData()
-
         formData.append('project', projectId)
 
-        formData.append('file', r1File.value)
-
-        //formData.append('file', r2FileInput.value)
+        if (isSingleEnd.value) {
+          formData.append('file', r1File.value)
+        } else {
+          console.log('pair')
+          formData.append('r1', r1File.value)
+          formData.append('r2', r2File.value)
+        }
 
         SampleService.create(formData)
           .then((response) => {
@@ -174,7 +189,8 @@ export default {
       fastaIcon,
       r1File,
       r2File,
-      uploadFile,
+      uploadFileR1,
+      uploadFileR2,
     }
   },
 }
