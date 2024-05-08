@@ -13,7 +13,7 @@ export default class AssemblyService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -32,7 +32,7 @@ export default class AssemblyService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -53,7 +53,7 @@ export default class AssemblyService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }

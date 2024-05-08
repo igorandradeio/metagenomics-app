@@ -16,7 +16,7 @@ export default class SampleService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -32,7 +32,7 @@ export default class SampleService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -53,7 +53,7 @@ export default class SampleService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }

@@ -16,7 +16,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -35,7 +35,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -53,7 +53,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -72,7 +72,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -91,7 +91,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }
@@ -110,7 +110,7 @@ export default class ProjectService extends BaseService {
           resolve(response.data)
         })
         .catch((error) => {
-          reject(error)
+          reject(error.response)
         })
     })
   }

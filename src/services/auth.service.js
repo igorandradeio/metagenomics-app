@@ -31,7 +31,7 @@ export default class AuthService extends BaseService {
           if (error.response && error.response.status === 401) {
             localStorage.removeItem(TOKEN_NAME)
           }
-          reject(error)
+          reject(error.response)
         })
     })
   }
