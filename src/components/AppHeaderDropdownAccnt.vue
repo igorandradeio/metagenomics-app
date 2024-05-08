@@ -1,8 +1,6 @@
 <template>
   <CDropdown placement="bottom-end" variant="nav-item">
-    <CDropdownToggle class="py-0 pe-0" :caret="false">
-      <CAvatar :src="avatar" size="md" />
-    </CDropdownToggle>
+    <CDropdownToggle color="primary">{{ userStore.fullName }}</CDropdownToggle>
     <CDropdownMenu class="pt-0">
       <CDropdownHeader
         component="h6"
@@ -10,53 +8,44 @@
       >
         Account
       </CDropdownHeader>
-      <CDropdownItem>
-        <CIcon icon="cil-bell" /> Updates
-        <CBadge color="info" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-envelope-open" /> Messages
-        <CBadge color="success" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-task" /> Tasks
-        <CBadge color="danger" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-comment-square" /> Comments
-        <CBadge color="warning" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
-      <CDropdownHeader
-        component="h6"
-        class="bg-body-secondary text-body-secondary fw-semibold my-2"
-      >
-        Settings
-      </CDropdownHeader>
       <CDropdownItem> <CIcon icon="cil-user" /> Profile </CDropdownItem>
-      <CDropdownItem> <CIcon icon="cil-settings" /> Settings </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-dollar" /> Payments
-        <CBadge color="secondary" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
-      <CDropdownItem>
-        <CIcon icon="cil-file" /> Projects
-        <CBadge color="primary" class="ms-auto">{{ itemsCount }}</CBadge>
-      </CDropdownItem>
       <CDropdownDivider />
-      <CDropdownItem> <CIcon icon="cil-shield-alt" /> Lock Account </CDropdownItem>
-      <CDropdownItem> <CIcon icon="cil-lock-locked" /> Logout </CDropdownItem>
+      <CDropdownItem @click="logout">
+        <CIcon icon="cil-lock-locked" />
+        <span v-if="loading"> Logging out... </span>
+        <span v-else> Logout </span>
+      </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>
 </template>
 
 <script>
-import avatar from '@/assets/images/avatars/1.jpg'
+import { useUserStore } from '@/stores/users'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
+    const userStore = useUserStore()
+    const router = useRouter()
+    const loading = ref(false)
+
+    const logout = () => {
+      loading.value = true
+
+      userStore
+        .logout()
+        .then(() => router.push({ name: 'login' }))
+        .catch(() => {
+          router.push({ name: 'login' })
+        })
+        .finally(() => (loading.value = false))
+    }
     return {
-      avatar: avatar,
-      itemsCount: 42,
+      logout,
+      loading,
+      userStore,
     }
   },
 }

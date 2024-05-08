@@ -26,5 +26,6 @@ export default {
     AppSidebar,
     CContainer,
   },
+  setup() {},
 }
 </script>

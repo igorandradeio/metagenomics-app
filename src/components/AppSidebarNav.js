@@ -1,43 +1,12 @@
 import { defineComponent, h, onMounted, ref, resolveComponent } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 import { CBadge, CSidebarNav, CNavItem, CNavGroup, CNavTitle } from '@coreui/vue'
 import nav from '@/_nav.js'
 
 import simplebar from 'simplebar-vue'
 import 'simplebar-vue/dist/simplebar.min.css'
-
-const normalizePath = (path) =>
-  decodeURI(path)
-    .replace(/#.*$/, '')
-    .replace(/(index)?\.(html)$/, '')
-
-const isActiveLink = (route, link) => {
-  if (link === undefined) {
-    return false
-  }
-
-  if (route.hash === link) {
-    return true
-  }
-
-  const currentPath = normalizePath(route.path)
-  const targetPath = normalizePath(link)
-
-  return currentPath === targetPath
-}
-
-const isActiveItem = (route, item) => {
-  if (isActiveLink(route, item.to)) {
-    return true
-  }
-
-  if (item.items) {
-    return item.items.some((child) => isActiveItem(route, child))
-  }
-
-  return false
-}
+import { useI18n } from 'vue-i18n'
 
 const AppSidebarNav = defineComponent({
   name: 'AppSidebarNav',
@@ -47,8 +16,44 @@ const AppSidebarNav = defineComponent({
     CNavTitle,
   },
   setup() {
+    const { t } = useI18n({ useScope: 'global' })
     const route = useRoute()
+    const router = useRouter()
+
     const firstRender = ref(true)
+
+    const normalizePath = (path) =>
+      decodeURI(path)
+        .replace(/#.*$/, '')
+        .replace(/(index)?\.(html)$/, '')
+
+    const isActiveLink = (route, link) => {
+      if (link === undefined) {
+        return false
+      }
+
+      if (route.hash === link) {
+        return true
+      }
+
+      const currentPath = normalizePath(route.path)
+      const targetPath = normalizePath(link)
+
+      return currentPath === targetPath
+    }
+
+    const isActiveItem = (route, item) => {
+      const routePath = router.resolve({ name: item.to }).path
+      if (isActiveLink(route, routePath)) {
+        return true
+      }
+
+      if (item.items) {
+        return item.items.some((child) => isActiveItem(route, child))
+      }
+
+      return false
+    }
 
     onMounted(() => {
       firstRender.value = false
@@ -71,18 +76,18 @@ const AppSidebarNav = defineComponent({
                 customClassName: 'nav-icon',
                 name: item.icon,
               }),
-              item.name,
+              t(item.name),
             ],
             default: () => item.items.map((child) => renderItem(child)),
           },
         )
       }
-
-      return item.to
+      const routePath = router.resolve({ name: item.to }).path
+      return routePath
         ? h(
             RouterLink,
             {
-              to: item.to,
+              to: routePath,
               custom: true,
             },
             {
@@ -103,7 +108,7 @@ const AppSidebarNav = defineComponent({
                             name: item.icon,
                           })
                         : h('span', { class: 'nav-icon' }, h('span', { class: 'nav-icon-bullet' })),
-                      item.name,
+                      t(item.name),
                       item.badge &&
                         h(
                           CBadge,
@@ -126,7 +131,7 @@ const AppSidebarNav = defineComponent({
               as: 'div',
             },
             {
-              default: () => item.name,
+              default: () => t(item.name),
             },
           )
     }

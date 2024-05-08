@@ -1,8 +1,8 @@
 export default [
   {
     component: 'CNavItem',
-    name: 'Dashboard',
-    to: '/dashboard',
+    name: 'dashboard.sidebar.dashboard',
+    to: 'dashboard.home',
     icon: 'cil-speedometer',
     badge: {
       color: 'primary',
@@ -10,19 +10,21 @@ export default [
     },
   },
   {
-    component: 'CNavTitle',
-    name: 'Theme',
+    component: 'CNavGroup',
+    name: 'dashboard.sidebar.project.title',
+    to: '#',
+    icon: 'cil-folder-open',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.project.create',
+        to: 'projects.create',
+      },
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.project.index',
+        to: 'projects.index',
+      },
+    ],
   },
-  {
-    component: 'CNavItem',
-    name: 'Colors',
-    to: '/theme/colors',
-    icon: 'cil-drop',
-  },
-  {
-    component: 'CNavItem',
-    name: 'Typography',
-    to: '/theme/typography',
-    icon: 'cil-pencil',
-  }
 ]
