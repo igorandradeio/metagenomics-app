@@ -2,7 +2,7 @@
   <CHeader position="sticky" :class="headerClassNames">
     <CContainer class="border-bottom px-4" fluid>
       <CNavbarBrand href="#">
-        <CIcon custom-class-name="sidebar-brand-full" :icon="logo" :height="32" />
+        <CImage :src="logo" :height="32" />
       </CNavbarBrand>
       <CHeaderToggler @click="toggleMenu" />
       <CHeaderNav class="d-none d-md-flex">
@@ -69,8 +69,7 @@
 import { ref } from 'vue'
 import { useColorModes } from '@coreui/vue'
 import { useRouter } from 'vue-router'
-import { logo } from '@/assets/brand/logo'
-import { sygnet } from '@/assets/brand/sygnet'
+import logo from '@/assets/brand/logo-colorful.svg'
 
 export default {
   name: 'AppHeader',
@@ -91,7 +90,6 @@ export default {
 
     return {
       logo,
-      sygnet,
       headerClassNames,
       colorMode,
       setColorMode,

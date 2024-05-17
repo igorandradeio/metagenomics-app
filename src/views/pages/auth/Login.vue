@@ -6,8 +6,11 @@
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
+                <div class="clearfix">
+                  <CImage align="start" :src="logo" :height="32" />
+                </div>
                 <CForm
-                  class="row g-3 needs-validation"
+                  class="needs-validation"
                   novalidate
                   :validated="validatedForm"
                   @submit.prevent="handleSubmit"
@@ -88,6 +91,7 @@ import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/users'
 import { useI18n } from 'vue-i18n'
+import logo from '@/assets/brand/logo-colorful.svg'
 
 export default {
   name: 'Login',
@@ -151,6 +155,7 @@ export default {
     const password = ref('')
 
     return {
+      logo,
       signup,
       loading,
       email,

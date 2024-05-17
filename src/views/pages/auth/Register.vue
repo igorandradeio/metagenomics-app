@@ -5,6 +5,9 @@
         <CCol :md="9" :lg="7" :xl="6">
           <CCard class="mx-4">
             <CCardBody class="p-4">
+              <div class="clearfix">
+                <CImage align="start" :src="logo" :height="32" />
+              </div>
               <CForm>
                 <h1>Register</h1>
                 <p class="text-body-secondary">Create your account</p>
@@ -12,7 +15,13 @@
                   <CInputGroupText>
                     <CIcon icon="cil-user" />
                   </CInputGroupText>
-                  <CFormInput placeholder="Username" autocomplete="username" />
+                  <CFormInput placeholder="First name" />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CInputGroupText>
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput placeholder="Last name" />
                 </CInputGroup>
                 <CInputGroup class="mb-3">
                   <CInputGroupText>@</CInputGroupText>
@@ -43,6 +52,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import logo from '@/assets/brand/logo-colorful.svg'
 
 export default {
   name: 'Register',
@@ -55,6 +65,7 @@ export default {
     }
 
     return {
+      logo,
       login,
     }
   },

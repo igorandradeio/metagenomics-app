@@ -4,7 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import SiteLayout from '@/layouts/SiteLayout.vue'
 import Login from '@/views/pages/auth/Login.vue'
-import Register from '@/views/pages/Register.vue'
 import ServerUnavailable from '@/views/pages/ServerUnavailable.vue'
 import { TOKEN_NAME } from '@/utils/constants'
 
@@ -30,7 +29,7 @@ const routes = [
   {
     path: '/signup',
     name: 'signup',
-    component: Register,
+    component: () => import('@/views/pages/auth/Register.vue'),
   },
   {
     path: '/dashboard',
@@ -167,7 +166,7 @@ router.beforeEach(async (to, _, next) => {
 })
 
 function isLoginPage(routeName) {
-  return routeName === 'login' || routeName === 'server.unavailable'
+  return routeName === 'login' || routeName === 'signup' || routeName === 'server.unavailable'
 }
 
 export default router
