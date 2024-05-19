@@ -34,18 +34,24 @@
     <CCol :xs="12">
       <CCard class="mb-4">
         <CCardHeader>
-          <strong>{{ $t('dashboard.project.tableTitle') }}</strong>
+          <CRow class="align-items-start">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <CButton color="primary" variant="ghost">{{
+                $t('dashboard.project.tableTitle')
+              }}</CButton>
+              <CButton color="primary" @click="newProject"> Add new</CButton>
+            </div>
+          </CRow>
         </CCardHeader>
         <CCardBody>
           <CTable hover>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">Accession</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Project name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Samples</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Operation</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Accession</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-40">Project name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Sample</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-20">Date</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-20">Operation</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -53,16 +59,13 @@
                 <CTableHeaderCell scope="row">{{ project.id }}</CTableHeaderCell>
                 <CTableDataCell>{{ project.name }}</CTableDataCell>
                 <CTableDataCell>{{ project.sample_count }}</CTableDataCell>
-                <CTableDataCell>{{ project.sequencing_read_type }}</CTableDataCell>
                 <CTableDataCell>{{ project.date }}</CTableDataCell>
                 <CTableDataCell>
-                  <div align="center">
-                    <router-link :to="{ name: 'projects.edit', params: { id: project.id } }">
-                      <CIcon :icon="cilPencil" size="lg" />
-                    </router-link>
+                  <router-link :to="{ name: 'projects.edit', params: { id: project.id } }">
+                    <CIcon :icon="cilPencil" size="lg" />
+                  </router-link>
 
-                    <CIcon :icon="cilTrash" size="lg" @click="openModal(project)" />
-                  </div>
+                  <CIcon :icon="cilTrash" size="lg" @click="openModal(project)" />
                 </CTableDataCell>
               </CTableRow>
             </CTableBody>
@@ -111,6 +114,10 @@ export default {
         .catch((error) => error)
     })
 
+    const newProject = () => {
+      router.push({ name: 'projects.create' })
+    }
+
     const deleteProject = () => {
       ProjectService.destroy(projectIdToDelete.value)
         .then(() => {
@@ -142,6 +149,7 @@ export default {
       openModal,
       isModalVisible,
       notification,
+      newProject,
     }
   },
 }
