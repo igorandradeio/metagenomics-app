@@ -70,15 +70,15 @@ const routes = [
               },
             },
             props: (route) => ({ id: parseInt(route.params.id) }),
-            meta: { title: 'Edit project' },
-            redirect: 'edit',
+            meta: { title: 'Project' },
+            redirect: (to) => `/projects/${to.params.id}/edit`,
             children: [
               {
                 path: 'edit',
                 name: 'projects.edit',
                 component: () => import('@/views/dashboard/projects/EditProject.vue'),
                 props: (route) => ({ id: parseInt(route.params.id) }),
-                meta: { title: 'Edit project' },
+                meta: { title: 'Edit' },
               },
               {
                 path: 'upload-samples',
@@ -96,30 +96,13 @@ const routes = [
               },
             ],
           },
-
           {
             path: 'new',
             name: 'projects.create',
             component: () => import('@/views/dashboard/projects/CreateProject.vue'),
             meta: { title: 'Create new project' },
           },
-
         ],
-      },
-      {
-        path: '/theme',
-        name: 'Theme',
-        redirect: '/theme/typography',
-      },
-      {
-        path: '/theme/colors',
-        name: 'Colors',
-        component: () => import('@/views/theme/Colors.vue'),
-      },
-      {
-        path: '/theme/typography',
-        name: 'Typography',
-        component: () => import('@/views/theme/Typography.vue'),
       },
       {
         path: '/server-unavailable',
