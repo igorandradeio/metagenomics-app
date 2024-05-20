@@ -15,7 +15,7 @@ const routes = [
     component: SiteLayout,
     children: [
       {
-        path: '/',
+        path: '',
         name: 'homepage',
         component: () => import('@/views/pages/site/Homepage.vue'),
       },
@@ -33,52 +33,78 @@ const routes = [
   },
   {
     path: '/dashboard',
+    name: 'Dashboard',
     component: DashboardLayout,
+    meta: { title: 'Dashboard' },
+    redirect: '/dashboard',
     children: [
       {
-        path: '',
+        path: '/dashboard',
         name: 'dashboard.home',
         component: () => import('@/views/dashboard/Dashboard.vue'),
+        meta: { title: 'Home' },
       },
       {
         path: '/projects',
-        name: 'projects.index',
-        component: () => import('@/views/dashboard/projects/ListProject.vue'),
-      },
-      {
-        path: '/project/new',
-        name: 'projects.create',
-        component: () => import('@/views/dashboard/projects/CreateProject.vue'),
-      },
-      {
-        path: '/project/:id/',
-        name: 'projects.edit',
-        component: () => import('@/views/dashboard/projects/EditProject.vue'),
-        props: true,
-      },
-      {
-        path: '/project/:id/upload-samples',
-        name: 'samples.create',
-        component: () => import('@/views/dashboard/samples/CreateSample.vue'),
-        props: true,
-      },
-      {
-        path: '/project/:id/upload-assembly',
-        name: 'assemblies.create',
-        component: () => import('@/views/dashboard/assemblies/CreateAssembly.vue'),
-        props: true,
-      },
-      {
-        path: '/project/:id/samples',
-        name: 'samples.index',
-        component: () => import('@/views/dashboard/samples/ListSample.vue'),
-        props: true,
-      },
-      {
-        path: '/project/:id/assembly',
-        name: 'assembly.index',
-        component: () => import('@/views/dashboard/assemblies/ListAssembly.vue'),
-        props: true,
+        name: 'projects',
+        meta: { title: 'Projects' },
+        component: {
+          render() {
+            return h(resolveComponent('router-view'))
+          },
+        },
+        redirect: '/projects/list',
+        children: [
+          {
+            path: 'list',
+            name: 'projects.index',
+            component: () => import('@/views/dashboard/projects/ListProject.vue'),
+            meta: { title: 'List projects' },
+          },
+          {
+            path: ':id',
+            name: 'projects.id',
+            component: {
+              render() {
+                return h(resolveComponent('router-view'))
+              },
+            },
+            props: (route) => ({ id: parseInt(route.params.id) }),
+            meta: { title: 'Edit project' },
+            redirect: 'edit',
+            children: [
+              {
+                path: 'edit',
+                name: 'projects.edit',
+                component: () => import('@/views/dashboard/projects/EditProject.vue'),
+                props: (route) => ({ id: parseInt(route.params.id) }),
+                meta: { title: 'Edit project' },
+              },
+              {
+                path: 'upload-samples',
+                name: 'samples.create',
+                component: () => import('@/views/dashboard/samples/CreateSample.vue'),
+                props: true,
+                meta: { title: 'Upload sample' },
+              },
+              {
+                path: 'upload-assembly',
+                name: 'assemblies.create',
+                component: () => import('@/views/dashboard/assemblies/CreateAssembly.vue'),
+                meta: { title: 'Upload assembly' },
+                props: true,
+              },
+            ],
+          },
+
+          {
+            path: 'new',
+            name: 'projects.create',
+            component: () => import('@/views/dashboard/projects/CreateProject.vue'),
+            meta: { title: 'Create new project' },
+          },
+
+        ],
       },
       {
         path: '/theme',
