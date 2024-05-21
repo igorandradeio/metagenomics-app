@@ -182,8 +182,7 @@ function isLoginPage(routeName) {
   return (
     routeName === 'login' ||
     routeName === 'signup' ||
-    routeName === 'server.unavailable' ||
-    routeName === 'about'
+    routeName === 'server.unavailable'
   )
 }
 
