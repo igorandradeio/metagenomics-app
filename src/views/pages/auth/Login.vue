@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+  <div class="bg-body-tertiary mt-5 d-flex flex-row align-items-center">
     <CContainer>
       <CRow class="justify-content-center">
         <CCol :md="8">
@@ -68,7 +68,7 @@
                 </CForm>
               </CCardBody>
             </CCard>
-            <CCard class="text-white bg-primary py-5" style="width: 44%">
+            <CCard class="text-white bg-primary py-5">
               <CCardBody class="text-center">
                 <div>
                   <h2>{{ $t('formLogin.signUpTitle') }}</h2>
