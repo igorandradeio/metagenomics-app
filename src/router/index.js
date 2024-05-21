@@ -149,7 +149,7 @@ router.beforeEach(async (to, _, next) => {
   const routeName = to.name
   const token = localStorage.getItem(TOKEN_NAME)
 
-  if (routeName === 'homepage') {
+  if (routeName === 'homepage' || routeName === 'about') {
     next()
     return
   }
@@ -179,11 +179,7 @@ router.beforeEach(async (to, _, next) => {
 })
 
 function isLoginPage(routeName) {
-  return (
-    routeName === 'login' ||
-    routeName === 'signup' ||
-    routeName === 'server.unavailable'
-  )
+  return routeName === 'login' || routeName === 'signup' || routeName === 'server.unavailable'
 }
 
 export default router
