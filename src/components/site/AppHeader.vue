@@ -1,16 +1,17 @@
 <template>
   <CHeader position="sticky" :class="headerClassNames">
     <CContainer class="border-bottom px-4" fluid>
-      <CNavbarBrand href="#">
+      <CNavbarBrand href="/">
         <CImage :src="logo" :height="32" />
       </CNavbarBrand>
       <CHeaderToggler @click="toggleMenu" />
-      <CHeaderNav class="d-none d-md-flex">
-        <CNavItem>
-          <CNavLink href="/dashboard"> Dashboard </CNavLink>
-        </CNavItem>
-      </CHeaderNav>
+
       <CHeaderNav class="ms-auto">
+        <CNavItem>
+          <CNavLink href="/about">
+            <CButton @click="login" color="info" variant="ghost">About</CButton>
+          </CNavLink>
+        </CNavItem>
         <CNavItem>
           <CNavLink href="#">
             <CButton @click="login" color="info" variant="outline">Login</CButton>

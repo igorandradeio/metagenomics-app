@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import SiteLayout from '@/layouts/SiteLayout.vue'
-import Login from '@/views/pages/auth/Login.vue'
 import ServerUnavailable from '@/views/pages/ServerUnavailable.vue'
 import { TOKEN_NAME } from '@/utils/constants'
 
@@ -19,17 +18,22 @@ const routes = [
         name: 'homepage',
         component: () => import('@/views/pages/site/Homepage.vue'),
       },
+      {
+        path: '/about',
+        name: 'about',
+        component: () => import('@/views/pages/site/About.vue'),
+      },
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/pages/auth/Login.vue'),
+      },
+      {
+        path: '/signup',
+        name: 'signup',
+        component: () => import('@/views/pages/auth/Register.vue'),
+      },
     ],
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login,
-  },
-  {
-    path: '/signup',
-    name: 'signup',
-    component: () => import('@/views/pages/auth/Register.vue'),
   },
   {
     path: '/dashboard',
@@ -175,7 +179,12 @@ router.beforeEach(async (to, _, next) => {
 })
 
 function isLoginPage(routeName) {
-  return routeName === 'login' || routeName === 'signup' || routeName === 'server.unavailable'
+  return (
+    routeName === 'login' ||
+    routeName === 'signup' ||
+    routeName === 'server.unavailable' ||
+    routeName === 'about'
+  )
 }
 
 export default router
