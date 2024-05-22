@@ -20,6 +20,9 @@ export const useUserStore = defineStore('users', {
     async auth(params) {
       return await AuthService.login(params)
     },
+    async register(params) {
+      return await AuthService.register(params)
+    },
     async getMe() {
       return await AuthService.getMe().then((response) => {
         this.user = response
