@@ -58,7 +58,7 @@ export default {
   name: 'CreateAssembly',
   props: {
     id: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

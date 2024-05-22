@@ -1,13 +1,16 @@
 <template>
-  <div class="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+  <div class="bg-body-tertiary mt-5 d-flex flex-row align-items-center">
     <CContainer>
       <CRow class="justify-content-center">
         <CCol :md="8">
           <CCardGroup>
             <CCard class="p-4">
               <CCardBody>
+                <div class="clearfix">
+                  <CImage align="start" :src="logo" :height="32" />
+                </div>
                 <CForm
-                  class="row g-3 needs-validation"
+                  class="needs-validation"
                   novalidate
                   :validated="validatedForm"
                   @submit.prevent="handleSubmit"
@@ -65,7 +68,7 @@
                 </CForm>
               </CCardBody>
             </CCard>
-            <CCard class="text-white bg-primary py-5" style="width: 44%">
+            <CCard class="text-white bg-primary py-5">
               <CCardBody class="text-center">
                 <div>
                   <h2>{{ $t('formLogin.signUpTitle') }}</h2>
@@ -88,6 +91,7 @@ import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/users'
 import { useI18n } from 'vue-i18n'
+import logo from '@/assets/brand/logo-colorful.svg'
 
 export default {
   name: 'Login',
@@ -151,6 +155,7 @@ export default {
     const password = ref('')
 
     return {
+      logo,
       signup,
       loading,
       email,

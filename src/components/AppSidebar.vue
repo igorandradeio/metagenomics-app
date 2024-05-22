@@ -10,8 +10,8 @@
     <CSidebarHeader class="border-bottom">
       <RouterLink custom to="/dashboard" v-slot="{ href, navigate }">
         <CSidebarBrand v-bind="$attrs" as="a" :href="href" @click="navigate">
-          <CIcon custom-class-name="sidebar-brand-full" :icon="logo" :height="32" />
-          <CIcon custom-class-name="sidebar-brand-narrow" :icon="sygnet" :height="32" />
+          <CImage class="sidebar-brand-full" :src="logo" :height="32" />
+          <CImage class="sidebar-brand-narrow" :src="logo_narrow" :height="32" />
         </CSidebarBrand>
       </RouterLink>
       <CCloseButton class="d-lg-none" dark @click="toggleSidebar" />
@@ -28,8 +28,9 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useDashboardStore } from '/src/stores/index.js'
 import { AppSidebarNav } from './AppSidebarNav'
-import { logo } from '@/assets/brand/logo'
-import { sygnet } from '@/assets/brand/sygnet'
+import logo from '@/assets/brand/logo.svg'
+import logo_narrow from '@/assets/brand/logo-narrow.svg'
+
 export default {
   name: 'AppSidebar',
   components: {
@@ -41,7 +42,7 @@ export default {
 
     return {
       logo,
-      sygnet,
+      logo_narrow,
       sidebarUnfoldable: computed(() => store.sidebarUnfoldable),
       sidebarVisible: computed(() => store.sidebarVisible),
       updateSidebarVisible: (event) => store.updateSidebarVisible(event),

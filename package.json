@@ -1,6 +1,6 @@
 {
-  "name": "MetaSoilInsight",
-  "version": "0.0.0",
+  "name": "MetaSoil Insight",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "dev": "vite --force",

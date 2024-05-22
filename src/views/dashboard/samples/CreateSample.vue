@@ -154,7 +154,6 @@ export default {
         if (isSingleEnd.value) {
           formData.append('file', r1File.value)
         } else {
-          console.log('pair')
           formData.append('r1', r1File.value)
           formData.append('r2', r2File.value)
         }

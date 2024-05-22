@@ -2,11 +2,11 @@
   <CBreadcrumb class="my-0">
     <CBreadcrumbItem
       v-for="item in breadcrumbs"
-      :key="item"
-      :href="item.active ? '' : item.path"
+      :key="item.name"
+      :href="item.active ? '' : item.fullPath"
       :active="item.active"
     >
-      {{ item.name }}
+      {{ item.title }}
     </CBreadcrumbItem>
   </CBreadcrumb>
 </template>
@@ -22,10 +22,20 @@ export default {
 
     const getBreadcrumbs = () => {
       return router.currentRoute.value.matched.map((route) => {
-        return {
-          active: route.path === router.currentRoute.value.fullPath,
+        const resolvedRoute = router.resolve({
           name: route.name,
-          path: `${router.options.history.base}${route.path}`,
+          params: route.params,
+        })
+
+        const currentPath = router.currentRoute.value.fullPath
+        const routePathRegex = new RegExp('^' + route.path.replace(/:id/g, '\\d+') + '$')
+        const isActive = routePathRegex.test(currentPath)
+
+        return {
+          active: isActive,
+          name: route.name,
+          title: route.meta.title,
+          fullPath: resolvedRoute.fullPath,
         }
       })
     }

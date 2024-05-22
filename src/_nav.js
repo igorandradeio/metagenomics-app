@@ -17,13 +17,13 @@ export default [
     items: [
       {
         component: 'CNavItem',
-        name: 'dashboard.sidebar.project.create',
-        to: 'projects.create',
+        name: 'dashboard.sidebar.project.index',
+        to: 'projects.index',
       },
       {
         component: 'CNavItem',
-        name: 'dashboard.sidebar.project.index',
-        to: 'projects.index',
+        name: 'dashboard.sidebar.project.create',
+        to: 'projects.create',
       },
     ],
   },
