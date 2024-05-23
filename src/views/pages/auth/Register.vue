@@ -54,6 +54,11 @@
                   />
                 </CInputGroup>
                 <CInputGroup class="mb-3">
+                  <CAlert v-if="error.active" color="warning" class="flex-grow-1">{{
+                    error.message
+                  }}</CAlert>
+                </CInputGroup>
+                <CInputGroup class="mb-3">
                   <CInputGroupText>
                     <CIcon icon="cil-lock-locked" />
                   </CInputGroupText>
@@ -120,6 +125,11 @@ export default {
       password: '',
     })
 
+    const error = reactive({
+      message: '',
+      active: false,
+    })
+
     const handleSubmit = (event) => {
       const form = event.currentTarget
       validatedForm.value = true
@@ -136,12 +146,18 @@ export default {
             email: formData.email,
             password: formData.password,
           })
-          .then((response) => {
+          .then(() => {
             toast.success('The user has been created')
             router.push({ name: 'dashboard.home' })
           })
-          .catch(() => {
-            toast.error(t('notification.errorMessage'))
+          .catch((errorResponse) => {
+            error.active = true
+
+            if (errorResponse.status === 409) {
+              error.message = t('formRegister.errorEmail')
+            } else {
+              toast.error(t('notification.errorMessage'))
+            }
           })
           .finally(() => {
             loading.value = false
@@ -156,6 +172,7 @@ export default {
       loading,
       formData,
       notification,
+      error,
     }
   },
 }
