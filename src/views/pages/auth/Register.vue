@@ -22,8 +22,10 @@
                   </CInputGroupText>
                   <CFormInput
                     placeholder="First name"
+                    minlength="2"
+                    maxlength="40"
                     v-model="formData.first_name"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter your first name (2-40 characters)"
                     required
                   />
                 </CInputGroup>
@@ -33,8 +35,10 @@
                   </CInputGroupText>
                   <CFormInput
                     placeholder="Last name"
+                    minlength="2"
+                    maxlength="40"
                     v-model="formData.last_name"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter your last name (2-40 characters)"
                     required
                   />
                 </CInputGroup>
@@ -43,9 +47,9 @@
                   <CFormInput
                     type="email"
                     placeholder="Email"
-                    autocomplete="email"
+                    maxlength="254"
                     v-model="formData.email"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter a valid email address"
                     required
                   />
                 </CInputGroup>
@@ -56,9 +60,10 @@
                   <CFormInput
                     type="password"
                     placeholder="Password"
-                    autocomplete="new-password"
+                    minlength="4"
+                    maxlength="100"
                     v-model="formData.password"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Password must be 8-100 characters"
                     required
                   />
                 </CInputGroup>
