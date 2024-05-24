@@ -21,11 +21,11 @@
                     <CIcon icon="cil-user" />
                   </CInputGroupText>
                   <CFormInput
+                    type="text"
                     placeholder="First name"
-                    minlength="2"
                     maxlength="40"
                     v-model="formData.first_name"
-                    feedbackInvalid="Please enter your first name (2-40 characters)"
+                    feedbackInvalid="Please enter your first name"
                     required
                   />
                 </CInputGroup>
@@ -34,11 +34,11 @@
                     <CIcon icon="cil-user" />
                   </CInputGroupText>
                   <CFormInput
+                    type="text"
                     placeholder="Last name"
-                    minlength="2"
                     maxlength="40"
                     v-model="formData.last_name"
-                    feedbackInvalid="Please enter your last name (2-40 characters)"
+                    feedbackInvalid="Please enter your last name"
                     required
                   />
                 </CInputGroup>
@@ -53,11 +53,7 @@
                     required
                   />
                 </CInputGroup>
-                <CInputGroup class="mb-3">
-                  <CAlert v-if="error.active" color="warning" class="flex-grow-1">{{
-                    error.message
-                  }}</CAlert>
-                </CInputGroup>
+
                 <CInputGroup class="mb-3">
                   <CInputGroupText>
                     <CIcon icon="cil-lock-locked" />
@@ -65,12 +61,16 @@
                   <CFormInput
                     type="password"
                     placeholder="Password"
-                    minlength="4"
                     maxlength="100"
                     v-model="formData.password"
-                    feedbackInvalid="Password must be 8-100 characters"
+                    feedbackInvalid="Please enter your password"
                     required
                   />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CAlert v-if="error.active" color="warning" class="flex-grow-1">{{
+                    error.message
+                  }}</CAlert>
                 </CInputGroup>
                 <div class="d-grid">
                   <CButton color="primary" type="submit">
@@ -132,7 +132,9 @@ export default {
 
     const handleSubmit = (event) => {
       const form = event.currentTarget
+
       validatedForm.value = true
+
       if (form.checkValidity() === true) {
         event.preventDefault()
         event.stopPropagation()
@@ -151,10 +153,9 @@ export default {
             router.push({ name: 'dashboard.home' })
           })
           .catch((errorResponse) => {
-            error.active = true
-
             if (errorResponse.status === 409) {
               error.message = t('formRegister.errorEmail')
+              error.active = true
             } else {
               toast.error(t('notification.errorMessage'))
             }

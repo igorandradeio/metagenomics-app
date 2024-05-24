@@ -46,9 +46,8 @@
               <CFormInput
                 type="text"
                 v-model="formData.name"
-                minlength="2"
                 maxlength="150"
-                feedbackInvalid="Please enter your project name (2-150 characters)"
+                feedbackInvalid="Please enter your project name"
                 required
               />
             </CCol>
