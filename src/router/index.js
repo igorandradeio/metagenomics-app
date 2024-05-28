@@ -49,6 +49,12 @@ const routes = [
         meta: { title: 'Home' },
       },
       {
+        path: '/profile',
+        name: 'users.profile',
+        component: () => import('@/views/dashboard/users/Profile.vue'),
+        meta: { title: 'Profile' },
+      },
+      {
         path: '/projects',
         name: 'projects',
         meta: { title: 'Projects' },

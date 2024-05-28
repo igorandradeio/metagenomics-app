@@ -8,7 +8,7 @@
       >
         Account
       </CDropdownHeader>
-      <CDropdownItem> <CIcon icon="cil-user" /> Profile </CDropdownItem>
+      <CDropdownItem @click="goToProfile"> <CIcon icon="cil-user" /> Profile </CDropdownItem>
       <CDropdownDivider />
       <CDropdownItem @click="logout">
         <CIcon icon="cil-lock-locked" />
@@ -31,6 +31,10 @@ export default {
     const router = useRouter()
     const loading = ref(false)
 
+    const goToProfile = () => {
+      router.push({ name: 'users.profile' })
+    }
+
     const logout = () => {
       loading.value = true
 
@@ -46,6 +50,7 @@ export default {
       logout,
       loading,
       userStore,
+      goToProfile,
     }
   },
 }

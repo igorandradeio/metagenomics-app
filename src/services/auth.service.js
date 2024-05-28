@@ -48,6 +48,28 @@ export default class AuthService extends BaseService {
     })
   }
 
+  static async updateProfile(params) {
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .patch('/users/profile/', params)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => reject(error.response))
+    })
+  }
+
+  static async changePassword(params) {
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .put('/users/change-password/', params)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => reject(error.response))
+    })
+  }
+
   static async logout() {
     return new Promise((resolve, reject) => {
       this.request({ auth: true })

@@ -7,14 +7,15 @@ export const en = {
     assembly: 'assembly',
   },
   dashboard: {
+
     sidebar: {
       project: {
         title: 'Project',
         index: 'My Projects',
         create: 'New Project',
       },
-      assembly: {
-        title: 'Assembly',
+      assembler: {
+        title: 'Assembler',
         index: 'My Assemblies',
         create: 'New Assembly',
       },
@@ -42,6 +43,9 @@ export const en = {
     passwordError: 'Incorrect password',
     userNotFound: 'User not found',
     genericError: 'Oops! Something went wrong',
+  },
+  formRegister: {
+    errorEmail: "The provided email is already in use."
   },
   notification: {
     successfulMessage: `The {entity} has been {action}!`,
