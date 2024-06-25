@@ -7,14 +7,24 @@
           <div v-if="hasAssembly">
             <CRow>
               <CCol :sm="6" :xl="6" :xxl="6" :key="assembly.id">
-                <CWidgetStatsF
-                  color="primary"
-                  :title="'Date: ' + assembly.date"
-                  :value="assembly.file_name"
-                >
+                <CWidgetStatsF color="primary">
+                  <template #value
+                    ><h6>
+                      {{ assembly.file_name }}
+                      <CBadge v-if="isAssembledByPlatform" color="success"
+                        >Assembled by the platform</CBadge
+                      >
+                    </h6>
+                  </template>
+
+                  <template #title
+                    ><h6>Date: {{ assembly.date }}</h6>
+                  </template>
+
                   <template #icon>
                     <CIcon icon="cil-file" size="xl" />
                   </template>
+
                   <template #footer>
                     <CLink
                       class="fw-semibold font-xs text-body-secondary"
@@ -91,7 +101,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import AssemblyService from '@/services/assembly.service'
 import { useI18n } from 'vue-i18n'
 
@@ -106,19 +116,35 @@ export default {
     const { t } = useI18n({ useScope: 'global' })
     const loading = ref(true)
     const projectId = props.id
-    const assembly = ref([])
+    const assembly = reactive({
+      id: '',
+      date: '',
+      download: '',
+      file_name: '',
+      project_id: '',
+      upload_source: '',
+    })
     const hasAssembly = ref(false)
 
     onMounted(() => {
       AssemblyService.getAssemblyByProject(projectId)
         .then((response) => {
           hasAssembly.value = true
-          assembly.value = response
+          assembly.id = response.id
+          assembly.date = response.date
+          assembly.download = response.download
+          assembly.file_name = response.file_name
+          assembly.project_id = response.project_id
+          assembly.upload_source = response.upload_source
         })
         .catch((error) => error)
         .finally(() => {
           loading.value = false
         })
+    })
+
+    const isAssembledByPlatform = computed(() => {
+      return assembly.upload_source == 1 ? true : false
     })
 
     const download = (assemblyId, fileName) => {
@@ -140,6 +166,7 @@ export default {
       download,
       hasAssembly,
       projectId,
+      isAssembledByPlatform,
     }
   },
 }
