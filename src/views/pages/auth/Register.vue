@@ -21,9 +21,11 @@
                     <CIcon icon="cil-user" />
                   </CInputGroupText>
                   <CFormInput
+                    type="text"
                     placeholder="First name"
+                    maxlength="40"
                     v-model="formData.first_name"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter your first name"
                     required
                   />
                 </CInputGroup>
@@ -32,9 +34,11 @@
                     <CIcon icon="cil-user" />
                   </CInputGroupText>
                   <CFormInput
+                    type="text"
                     placeholder="Last name"
+                    maxlength="40"
                     v-model="formData.last_name"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter your last name"
                     required
                   />
                 </CInputGroup>
@@ -43,12 +47,13 @@
                   <CFormInput
                     type="email"
                     placeholder="Email"
-                    autocomplete="email"
+                    maxlength="254"
                     v-model="formData.email"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter a valid email address"
                     required
                   />
                 </CInputGroup>
+
                 <CInputGroup class="mb-3">
                   <CInputGroupText>
                     <CIcon icon="cil-lock-locked" />
@@ -56,11 +61,16 @@
                   <CFormInput
                     type="password"
                     placeholder="Password"
-                    autocomplete="new-password"
+                    maxlength="100"
                     v-model="formData.password"
-                    feedbackInvalid="This field is required"
+                    feedbackInvalid="Please enter your password"
                     required
                   />
+                </CInputGroup>
+                <CInputGroup class="mb-3">
+                  <CAlert v-if="error.active" color="warning" class="flex-grow-1">{{
+                    error.message
+                  }}</CAlert>
                 </CInputGroup>
                 <div class="d-grid">
                   <CButton color="primary" type="submit">
@@ -115,9 +125,16 @@ export default {
       password: '',
     })
 
+    const error = reactive({
+      message: '',
+      active: false,
+    })
+
     const handleSubmit = (event) => {
       const form = event.currentTarget
+
       validatedForm.value = true
+
       if (form.checkValidity() === true) {
         event.preventDefault()
         event.stopPropagation()
@@ -131,12 +148,17 @@ export default {
             email: formData.email,
             password: formData.password,
           })
-          .then((response) => {
+          .then(() => {
             toast.success('The user has been created')
             router.push({ name: 'dashboard.home' })
           })
-          .catch(() => {
-            toast.error(t('notification.errorMessage'))
+          .catch((errorResponse) => {
+            if (errorResponse.status === 409) {
+              error.message = t('formRegister.errorEmail')
+              error.active = true
+            } else {
+              toast.error(t('notification.errorMessage'))
+            }
           })
           .finally(() => {
             loading.value = false
@@ -151,6 +173,7 @@ export default {
       loading,
       formData,
       notification,
+      error,
     }
   },
 }

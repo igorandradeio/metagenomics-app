@@ -48,16 +48,17 @@
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col" class="w-10">Accession</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="w-40">Project name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-50">Project name</CTableHeaderCell>
+
                 <CTableHeaderCell scope="col" class="w-10">Sample</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-20">Date</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="w-20">Operation</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Operation</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
               <CTableRow v-for="project in projectsList" :key="project.id">
                 <CTableHeaderCell scope="row">{{ project.id }}</CTableHeaderCell>
-                <CTableDataCell>{{ project.name }}</CTableDataCell>
+                <CTableDataCell style="word-break: break-all">{{ project.name }}</CTableDataCell>
                 <CTableDataCell>{{ project.sample_count }}</CTableDataCell>
                 <CTableDataCell>{{ project.date }}</CTableDataCell>
                 <CTableDataCell>
