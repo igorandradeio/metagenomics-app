@@ -22,7 +22,7 @@ jobs:
         run: |
           rsync -avz --exclude '.git' -e "ssh -o StrictHostKeyChecking=no" . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
-      - name: SSH into EC2 and deploy
+      - name: SSH into server and deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.WORK_DIR }}
