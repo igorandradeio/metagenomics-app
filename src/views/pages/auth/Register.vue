@@ -153,7 +153,10 @@ export default {
             router.push({ name: 'dashboard.home' })
           })
           .catch((errorResponse) => {
-            if (errorResponse.status === 409) {
+            if (!errorResponse) {
+              error.message = t('formLogin.networkError')
+              error.active = true
+            } else if (errorResponse.status === 409) {
               error.message = t('formRegister.errorEmail')
               error.active = true
             } else {
