@@ -27,4 +27,35 @@ export default [
       },
     ],
   },
+  {
+    component: 'CNavGroup',
+    name: 'dashboard.sidebar.assembler.title',
+    to: '#',
+    icon: 'cil-folder-open',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.assembler.index',
+        to: 'projects.index',
+      },
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.assembler.create',
+        to: 'projects.create',
+      },
+    ],
+  },
+  {
+    component: 'CNavGroup',
+    name: 'dashboard.sidebar.task.title',
+    to: '#',
+    icon: 'cil-folder-open',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.task.index',
+        to: 'tasks.index',
+      },
+    ],
+  },
 ]

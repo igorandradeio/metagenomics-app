@@ -5,9 +5,9 @@ export const en = {
     project: 'project',
     sample: 'sample',
     assembly: 'assembly',
+    task: 'task',
   },
   dashboard: {
-
     sidebar: {
       project: {
         title: 'Project',
@@ -18,6 +18,10 @@ export const en = {
         title: 'Assembler',
         index: 'My Assemblies',
         create: 'New Assembly',
+      },
+      task: {
+        title: 'Tasks',
+        index: 'My Tasks',
       },
       theme: 'Theme',
       dashboard: 'Dashboard',
@@ -45,7 +49,7 @@ export const en = {
     genericError: 'Oops! Something went wrong',
   },
   formRegister: {
-    errorEmail: "The provided email is already in use."
+    errorEmail: 'The provided email is already in use.',
   },
   notification: {
     successfulMessage: `The {entity} has been {action}!`,
@@ -58,6 +62,7 @@ export const en = {
       created: 'created',
       deleted: 'deleted',
       updated: 'updated',
+      revoked: 'revoked',
     },
   },
   modal: {
@@ -68,6 +73,19 @@ export const en = {
         cancel: 'Cancel',
         confirm: 'Delete',
       },
+    },
+    stop: {
+      title: `Stop {entity}`,
+      text: 'Are you sure you want to stop this {entity} ?',
+      button: {
+        cancel: 'Cancel',
+        confirm: 'Confirm',
+      },
+    },
+  },
+  task: {
+    status: {
+      canceled: 'Canceled',
     },
   },
 }

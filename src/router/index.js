@@ -115,6 +115,25 @@ const routes = [
         ],
       },
       {
+        path: '/tasks',
+        name: 'tasks',
+        meta: { title: 'Tasks' },
+        component: {
+          render() {
+            return h(resolveComponent('router-view'))
+          },
+        },
+        redirect: '/tasks/list',
+        children: [
+          {
+            path: 'list',
+            name: 'tasks.index',
+            component: () => import('@/views/dashboard/tasks/ListTask.vue'),
+            meta: { title: 'List tasks' },
+          },
+        ],
+      },
+      {
         path: '/server-unavailable',
         name: 'server.unavailable',
         component: ServerUnavailable,

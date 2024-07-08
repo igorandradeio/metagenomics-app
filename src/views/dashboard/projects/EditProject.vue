@@ -6,12 +6,9 @@
         isModalVisible = false
       }
     "
-    aria-labelledby="LiveDemoExampleLabel"
   >
     <CModalHeader>
-      <CModalTitle id="LiveDemoExampleLabel">{{
-        $t('modal.delete.title', { entity: $t('entity.project') })
-      }}</CModalTitle>
+      <CModalTitle>{{ $t('modal.delete.title', { entity: $t('entity.project') }) }}</CModalTitle>
     </CModalHeader>
     <CModalBody>{{ $t('modal.delete.text', { entity: $t('entity.project') }) }}</CModalBody>
     <CModalFooter>
