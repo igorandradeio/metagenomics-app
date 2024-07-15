@@ -27,4 +27,17 @@ export default [
       },
     ],
   },
+  {
+    component: 'CNavGroup',
+    name: 'dashboard.sidebar.task.title',
+    to: '#',
+    icon: 'cil-folder-open',
+    items: [
+      {
+        component: 'CNavItem',
+        name: 'dashboard.sidebar.task.index',
+        to: 'tasks.index',
+      },
+    ],
+  },
 ]

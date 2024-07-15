@@ -6,12 +6,9 @@
         isModalVisible = false
       }
     "
-    aria-labelledby="LiveDemoExampleLabel"
   >
     <CModalHeader>
-      <CModalTitle id="LiveDemoExampleLabel">{{
-        $t('modal.delete.title', { entity: $t('entity.project') })
-      }}</CModalTitle>
+      <CModalTitle>{{ $t('modal.delete.title', { entity: $t('entity.project') }) }}</CModalTitle>
     </CModalHeader>
     <CModalBody>{{ $t('modal.delete.text', { entity: $t('entity.project') }) }}</CModalBody>
     <CModalFooter>
@@ -93,6 +90,7 @@
     </CCol>
   </CRow>
   <ListSample :id="projectId" />
+  <AssemblerButton :id="projectId" />
   <ListAssembly :id="projectId" />
 </template>
 
@@ -104,12 +102,14 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import ListSample from '@/views/dashboard/samples/ListSample.vue'
 import ListAssembly from '@/views/dashboard/assemblies/ListAssembly.vue'
+import AssemblerButton from '@/views/dashboard/assemblies/AssemblerButton.vue'
 
 export default {
   name: 'EditProject',
   components: {
     ListSample,
     ListAssembly,
+    AssemblerButton,
   },
   props: {
     id: {

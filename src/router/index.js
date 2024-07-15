@@ -104,6 +104,13 @@ const routes = [
                 meta: { title: 'Upload assembly' },
                 props: true,
               },
+              {
+                path: 'assembler',
+                name: 'assembler',
+                component: () => import('@/views/dashboard/assemblies/Assembler.vue'),
+                meta: { title: 'Assembler' },
+                props: true,
+              },
             ],
           },
           {
@@ -111,6 +118,25 @@ const routes = [
             name: 'projects.create',
             component: () => import('@/views/dashboard/projects/CreateProject.vue'),
             meta: { title: 'Create new project' },
+          },
+        ],
+      },
+      {
+        path: '/tasks',
+        name: 'tasks',
+        meta: { title: 'Tasks' },
+        component: {
+          render() {
+            return h(resolveComponent('router-view'))
+          },
+        },
+        redirect: '/tasks/list',
+        children: [
+          {
+            path: 'list',
+            name: 'tasks.index',
+            component: () => import('@/views/dashboard/tasks/ListTask.vue'),
+            meta: { title: 'List tasks' },
           },
         ],
       },
