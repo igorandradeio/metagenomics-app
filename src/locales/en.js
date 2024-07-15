@@ -85,7 +85,7 @@ export const en = {
   },
   task: {
     status: {
-      canceled: 'Canceled',
+      revoked: 'Revoked',
     },
   },
 }

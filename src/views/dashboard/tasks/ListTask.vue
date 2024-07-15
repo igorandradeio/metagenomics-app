@@ -35,10 +35,10 @@
           <CTable hover>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col" class="w-10">project</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Project</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-50">ID</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="w-10">type</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="w-10">status</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Type</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-10">Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-10">Created</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-10">Last update</CTableHeaderCell>
               </CTableRow>
@@ -54,12 +54,17 @@
                 <CTableHeaderCell scope="row">{{ task.type_name }}</CTableHeaderCell>
                 <CTableDataCell style="word-break: break-all">
                   <CButton :color="getButtonColor(task.status)" disabled>
-                    <CSpinner v-if="task.status == 1" as="span" size="sm" aria-hidden="true" />
+                    <CSpinner
+                      v-if="task.status == 1 || task.status == 2"
+                      as="span"
+                      size="sm"
+                      aria-hidden="true"
+                    />
                     {{ task.status_name }}
                   </CButton>
                   <CButton
                     :id="task.id"
-                    v-if="task.status == 1"
+                    v-if="task.status == 1 || task.status == 2"
                     color="danger"
                     @click="openModal(task)"
                   >
@@ -139,8 +144,8 @@ export default {
     const updateTaskStatus = (taskId) => {
       const task = taskList.value.find((t) => t.task_id === taskId)
       if (task) {
-        task.status = 4
-        task.status_name = t('task.status.canceled')
+        task.status = 5
+        task.status_name = t('task.status.revoked')
       }
     }
 
@@ -152,15 +157,17 @@ export default {
     const getButtonColor = (status) => {
       switch (status) {
         case 1:
-          return 'primary' // Pending
+          return 'secondary' // Pending
         case 2:
-          return 'success' // Success
+          return 'primary' // Started
         case 3:
-          return 'danger' // Failure
+          return 'success' // Success
         case 4:
-          return 'secondary' // Canceled
+          return 'danger' // Failure
+        case 5:
+          return 'dark' // Revoked
         default:
-          return 'primary'
+          return 'secondary'
       }
     }
 

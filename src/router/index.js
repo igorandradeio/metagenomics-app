@@ -104,6 +104,13 @@ const routes = [
                 meta: { title: 'Upload assembly' },
                 props: true,
               },
+              {
+                path: 'assembler',
+                name: 'assembler',
+                component: () => import('@/views/dashboard/assemblies/Assembler.vue'),
+                meta: { title: 'Assembler' },
+                props: true,
+              },
             ],
           },
           {
