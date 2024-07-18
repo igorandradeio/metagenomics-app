@@ -155,7 +155,7 @@ export default {
         if (parseInt(newkMax) == 1) {
           kMin.value = '1'
         } else {
-          kMin.value = (parseInt(newkMax) + 2).toString()
+          kMin.value = (parseInt(newkMax) - 2).toString()
         }
       }
     })
