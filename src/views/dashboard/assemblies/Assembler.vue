@@ -33,53 +33,71 @@
           <div>
             <!-- Min Count Range -->
             <div>
-              <CFormRange
-                label="Min Count"
-                :min="1"
-                :max="10"
-                v-model="minCount"
-                id="minCountRange"
-              />
-              <p>Selected Min Count: {{ minCount }}</p>
+              <CAlert color="dark">
+                <strong>Min Count</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Minimum multiplicity for filtering (k_min+1)-mers, default 2.',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange :min="1" :max="10" v-model="minCount" id="minCountRange" />
+                <p>Selected Min Count: {{ minCount }}</p>
+              </CAlert>
             </div>
 
             <!-- K-min Range -->
             <div>
-              <CFormRange
-                label="K-min"
-                :min="1"
-                :max="127"
-                step="2"
-                v-model="kMin"
-                id="kMinRange"
-              />
-              <p>Selected K-min: {{ kMin }}</p>
-            </div>
+              <CAlert color="dark">
+                <strong>K-min</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Minimum kmer size (<= 127), must be odd number, default 21',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange :min="1" :max="127" step="2" v-model="kMin" id="kMinRange" />
+                <p>Selected K-min: {{ kMin }}</p>
 
-            <!-- K-max Range -->
-            <div>
-              <CFormRange
-                label="K-max"
-                :min="1"
-                :max="127"
-                step="2"
-                v-model="kMax"
-                id="kMaxRange"
-              />
-              <p>Selected K-max: {{ kMax }}</p>
+                <!-- K-max Range -->
+                <strong>K-max</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Maximum kmer size (<= 127), must be odd number, default 99.',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange :min="1" :max="127" step="2" v-model="kMax" id="kMaxRange" />
+                <p>Selected K-max: {{ kMax }}</p>
+              </CAlert>
             </div>
 
             <!-- K-step Range -->
             <div>
-              <CFormRange
-                label="K-step"
-                :min="2"
-                :max="28"
-                step="2"
-                v-model="kStep"
-                id="kStepRange"
-              />
-              <p>Selected K-step: {{ kStep }}</p>
+              <CAlert color="dark">
+                <strong>K-step</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content:
+                      'Increment of kmer size of each iteration (<= 28), must be even number, default 20',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange :min="2" :max="28" step="2" v-model="kStep" id="kStepRange" />
+                <p>Selected K-step: {{ kStep }}</p>
+              </CAlert>
             </div>
           </div>
           <div class="d-grid gap-2">
@@ -120,6 +138,27 @@ export default {
     const kMin = ref('21')
     const kMax = ref('99')
     const kStep = ref('20')
+
+    // Watchers to enforce the rules for kMin and kMax
+    watch(kMin, (newkMin) => {
+      if (parseInt(newkMin) > parseInt(kMax.value)) {
+        if (parseInt(newkMin) == 127) {
+          kMax.value = '127'
+        } else {
+          kMax.value = (parseInt(newkMin) + 2).toString()
+        }
+      }
+    })
+
+    watch(kMax, (newkMax) => {
+      if (parseInt(newkMax) < parseInt(kMin.value)) {
+        if (parseInt(newkMax) == 1) {
+          kMin.value = '1'
+        } else {
+          kMin.value = (parseInt(newkMax) + 2).toString()
+        }
+      }
+    })
 
     return {
       loading,
