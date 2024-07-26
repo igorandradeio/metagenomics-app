@@ -18,6 +18,24 @@ export default class AssemblyService extends BaseService {
     })
   }
 
+  static async assembler(id, params) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .post(`/projects/${id}/start_assembly/`, params)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error.response)
+        })
+    })
+  }
+
   static async getAssemblyByProject(projectId) {
     const token = await localStorage.getItem(TOKEN_NAME)
 
@@ -28,6 +46,25 @@ export default class AssemblyService extends BaseService {
     return new Promise((resolve, reject) => {
       this.request({ auth: true })
         .get(`/project/${projectId}/assembly/`)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error.response)
+        })
+    })
+  }
+
+  static async getTaskStatus(TaskId) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .get(`/task/${TaskId}/`)
         .then((response) => {
           resolve(response.data)
         })

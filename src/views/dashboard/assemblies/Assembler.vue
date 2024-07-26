@@ -2,7 +2,112 @@
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> <strong>MEGAHIT Citation</strong> </CCardHeader>
+        <CCardHeader> <strong>Run MEGAHIT</strong> </CCardHeader>
+        <CCardBody>
+          <div>
+            <!-- Min Count Range -->
+            <div>
+              <CAlert color="dark">
+                <strong>Min Count</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Minimum multiplicity for filtering (k_min+1)-mers, default 2.',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange
+                  :min="1"
+                  :max="10"
+                  v-model="assemblyOptions.k_count"
+                  id="assemblyOptions.k_countRange"
+                />
+                <p>Selected Min Count: {{ assemblyOptions.k_count }}</p>
+              </CAlert>
+            </div>
+
+            <!-- K-min Range -->
+            <div>
+              <CAlert color="dark">
+                <strong>K-min</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Minimum kmer size (<= 127), must be odd number, default 21',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange
+                  :min="1"
+                  :max="127"
+                  step="2"
+                  v-model="assemblyOptions.k_min"
+                  id="assemblyOptions.k_minRange"
+                />
+                <p>Selected K-min: {{ assemblyOptions.k_min }}</p>
+
+                <!-- K-max Range -->
+                <strong>K-max</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content: 'Maximum kmer size (<= 127), must be odd number, default 99.',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange
+                  :min="1"
+                  :max="127"
+                  step="2"
+                  v-model="assemblyOptions.k_max"
+                  id="assemblyOptions.k_maxRange"
+                />
+                <p>Selected K-max: {{ assemblyOptions.k_max }}</p>
+              </CAlert>
+            </div>
+
+            <!-- K-step Range -->
+            <div>
+              <CAlert color="dark">
+                <strong>K-step</strong>
+                <CButton
+                  color="link"
+                  v-c-tooltip="{
+                    content:
+                      'Increment of kmer size of each iteration (<= 28), must be even number, default 20',
+                    placement: 'top',
+                  }"
+                >
+                  <CIcon icon="cil-info" size="lg" class="me-2" />
+                </CButton>
+                <CFormRange
+                  :min="2"
+                  :max="28"
+                  step="2"
+                  v-model="assemblyOptions.k_step"
+                  id="assemblyOptions.k_stepRange"
+                />
+                <p>Selected K-step: {{ assemblyOptions.k_step }}</p>
+              </CAlert>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <CButton :disabled="buttonDisabled" color="primary" @click="runAssembler">Run</CButton>
+          </div>
+        </CCardBody>
+      </CCard>
+    </CCol>
+  </CRow>
+  <CRow>
+    <CCol :xs="12">
+      <CCard class="mb-4">
+        <CCardHeader> <strong>MEGAHIT</strong> </CCardHeader>
         <CCardBody>
           <p>
             "MEGAHIT is an ultra-fast and memory-efficient NGS assembler. It is optimized for
@@ -25,76 +130,14 @@
       </CCard>
     </CCol>
   </CRow>
-  <CRow>
-    <CCol :xs="12">
-      <CCard class="mb-4">
-        <CCardHeader> <strong>Run MEGAHIT</strong> </CCardHeader>
-        <CCardBody>
-          <div>
-            <!-- Min Count Range -->
-            <div>
-              <CFormRange
-                label="Min Count"
-                :min="1"
-                :max="10"
-                v-model="minCount"
-                id="minCountRange"
-              />
-              <p>Selected Min Count: {{ minCount }}</p>
-            </div>
-
-            <!-- K-min Range -->
-            <div>
-              <CFormRange
-                label="K-min"
-                :min="1"
-                :max="127"
-                step="2"
-                v-model="kMin"
-                id="kMinRange"
-              />
-              <p>Selected K-min: {{ kMin }}</p>
-            </div>
-
-            <!-- K-max Range -->
-            <div>
-              <CFormRange
-                label="K-max"
-                :min="1"
-                :max="127"
-                step="2"
-                v-model="kMax"
-                id="kMaxRange"
-              />
-              <p>Selected K-max: {{ kMax }}</p>
-            </div>
-
-            <!-- K-step Range -->
-            <div>
-              <CFormRange
-                label="K-step"
-                :min="2"
-                :max="28"
-                step="2"
-                v-model="kStep"
-                id="kStepRange"
-              />
-              <p>Selected K-step: {{ kStep }}</p>
-            </div>
-          </div>
-          <div class="d-grid gap-2">
-            <CButton color="primary">Run</CButton>
-          </div>
-        </CCardBody>
-      </CCard>
-    </CCol>
-  </CRow>
 </template>
 
 <script>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import AssemblyService from '@/services/assembly.service'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Assembler',
@@ -105,7 +148,11 @@ export default {
   },
   setup(props) {
     const { t } = useI18n({ useScope: 'global' })
+    const toast = useToast()
     const loading = ref(true)
+    const buttonDisabled = ref(false)
+    const router = useRouter()
+
     const projectId = props.id
     const assembly = reactive({
       id: '',
@@ -114,22 +161,69 @@ export default {
       project_id: '',
       upload_source: '',
     })
-    const hasAssembly = ref(true)
 
-    const minCount = ref('2')
-    const kMin = ref('21')
-    const kMax = ref('99')
-    const kStep = ref('20')
+    const assemblyOptions = reactive({
+      k_count: '2',
+      k_min: '21',
+      k_max: '99',
+      k_step: '20',
+    })
+
+    const runAssembler = () => {
+      buttonDisabled.value = true
+
+      AssemblyService.assembler(props.id, { ...assemblyOptions })
+        .then((response) => {
+          toast.success(
+            t('notification.successfulMessage', {
+              entity: t('entity.assembly'),
+              action: t('notification.actions.scheduled'),
+            }),
+          )
+          router.push({ name: 'task.id', params: { id: response.task_id } })
+        })
+        .catch(() => {
+          toast.error(t('notification.errorMessage'))
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    }
+
+    // Watchers to enforce the rules for kMin and kMax
+    watch(
+      () => assemblyOptions.k_min,
+      (newkMin) => {
+        if (parseInt(newkMin) > parseInt(assemblyOptions.k_max)) {
+          if (parseInt(newkMin) == 127) {
+            assemblyOptions.k_max = '127'
+          } else {
+            assemblyOptions.k_max = (parseInt(newkMin) + 2).toString()
+          }
+        }
+      },
+    )
+
+    watch(
+      () => assemblyOptions.k_max,
+      (newkMax) => {
+        if (parseInt(newkMax) < parseInt(assemblyOptions.k_min)) {
+          if (parseInt(newkMax) == 1) {
+            assemblyOptions.k_min = '1'
+          } else {
+            assemblyOptions.k_min = (parseInt(newkMax) - 2).toString()
+          }
+        }
+      },
+    )
 
     return {
       loading,
       assembly,
-      hasAssembly,
       projectId,
-      minCount,
-      kMin,
-      kMax,
-      kStep,
+      assemblyOptions,
+      runAssembler,
+      buttonDisabled,
     }
   },
 }
