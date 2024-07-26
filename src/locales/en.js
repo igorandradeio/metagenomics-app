@@ -63,6 +63,7 @@ export const en = {
       deleted: 'deleted',
       updated: 'updated',
       revoked: 'revoked',
+      scheduled: 'scheduled'
     },
   },
   modal: {
