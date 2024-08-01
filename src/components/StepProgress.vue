@@ -54,7 +54,7 @@
         <CRow v-else>
           <div class="d-grid col-6 mx-auto" align="center">
             <CAlert color="danger">
-              <CIcon icon="cil-sad" size="xxl" /> <br />Sorry, Your task has
+              <CIcon icon="cil-sad" size="xxl" /> <br />Sorry, Your task has been
               {{ errorStatus }}!</CAlert
             >
           </div>
@@ -130,19 +130,18 @@ export default {
     }
 
     const stopTask = () => {
-      TaskService.revoke({ task_id: taskIdToStop.value })
+      TaskService.revoke({ task_id: taskId })
         .then(() => {
+          currentStep.value = 0
+          error.value = true
           toast.success(
             t('notification.successfulMessage', {
               entity: t('entity.task'),
               action: t('notification.actions.revoked'),
             }),
           )
-          updateTaskStatus(taskIdToStop.value)
         })
-        .catch((error) => {
-          console.log(error)
-
+        .catch(() => {
           toast.error(t('notification.errorMessage'))
         })
         .finally(() => {
@@ -174,7 +173,6 @@ export default {
               loading.value = false
               errorStatus.value = 'Failed'
               activeColor.value = '#c0392b'
-              currentStep.value = 3
               currentStep.value = 0
               error.value = true
               break
@@ -182,7 +180,6 @@ export default {
               loading.value = false
               errorStatus.value = 'Revoked'
               activeColor.value = '#c0392b'
-              currentStep.value = 3
               currentStep.value = 0
               error.value = true
               break
