@@ -143,7 +143,7 @@ const routes = [
             name: 'task.id',
             component: () => import('@/views/dashboard/tasks/TaskDetail.vue'),
             props: (route) => ({ id: route.params.id }),
-            meta: { title: 'Edit' },
+            meta: { title: 'Task Detail' },
           },
         ],
       },
