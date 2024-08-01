@@ -151,7 +151,7 @@ export default {
           )
         })
         .catch(() => {
-          toast.error(t('notification.errorMessage'))
+          toast.error(t('.errorMessage'))
         })
         .finally(() => {
           isModalVisible.value = false
@@ -197,6 +197,7 @@ export default {
         })
         .catch((error) => {
           if (error.status === 404) {
+            toast.error(t('notification.errorMessage'))
             router.push({ name: 'projects.index' })
           }
         })
