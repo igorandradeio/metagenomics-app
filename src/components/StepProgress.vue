@@ -38,16 +38,23 @@
         </CRow>
         <hr class="mt-0" />
         <CRow v-if="!error">
-          <div class="d-grid col-6 mx-auto" align="center">
+          <div v-if="loading" class="d-grid col-6 mx-auto" align="center">
             <CAlert color="info">
-              <br />
               <CButton color="danger" variant="outline" class="mb-3" @click="openModal"
                 >STOP TASK</CButton
               >
               <br />
-
               <CSpinner color="primary" />
               <br />Updating task status every 10 seconds...</CAlert
+            >
+          </div>
+          <div v-else class="d-grid col-6 mx-auto" align="center">
+            <CAlert color="success">
+              <CIcon icon="cil-smile" size="xxl" />
+              <br />Your task has been finished!<br />
+              <CButton color="success" variant="outline" class="mb-3" @click="goToProject"
+                >OPEN PROJECT</CButton
+              ></CAlert
             >
           </div>
         </CRow>
@@ -90,11 +97,12 @@
 </template>
 <script>
 import { CProgress, CProgressBar } from '@coreui/vue'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import TaskService from '@/services/task.service'
 
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'StepProgress',
@@ -124,7 +132,8 @@ export default {
     const mySteps = computed(() => props.steps)
     const progressValue = computed(() => (currentStep.value / maxValue.value) * 100)
     const isModalVisible = ref(false)
-
+    const router = useRouter()
+    const projectId = ref('')
     const openModal = () => {
       isModalVisible.value = true
     }
@@ -153,7 +162,8 @@ export default {
       TaskService.getTaskStatus(props.id)
         .then((response) => {
           console.log(response)
-          console.log(response.status)
+          projectId.value = response.project
+          //projectId = response.project
 
           switch (response.status) {
             case 1: // Pending
@@ -185,11 +195,12 @@ export default {
               break
           }
         })
-        .catch(() => {
-          toast.error(t('notification.errorMessage'))
+        .catch((error) => {
+          if (error.status === 404) {
+            router.push({ name: 'projects.index' })
+          }
         })
     }
-
     onMounted(() => {
       fetchTaskStatus()
       const interval = setInterval(() => {
@@ -199,8 +210,16 @@ export default {
           clearInterval(interval)
         }
       }, 10000)
+
+      // Clean up the interval when the component is destroyed
+      onUnmounted(() => {
+        clearInterval(interval)
+      })
     })
 
+    const goToProject = () => {
+      router.push({ name: 'projects.edit', params: { id: projectId.value } })
+    }
     return {
       taskId,
       maxValue,
@@ -214,6 +233,7 @@ export default {
       openModal,
       isModalVisible,
       stopTask,
+      goToProject,
     }
   },
 }
