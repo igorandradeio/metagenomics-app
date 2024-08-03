@@ -1,25 +1,11 @@
 <template>
-  <CModal
-    :visible="isModalVisible"
-    @close="
-      () => {
-        isModalVisible = false
-      }
-    "
-  >
+  <CModal :visible="isModalVisible" @close="isModalVisible = false">
     <CModalHeader>
       <CModalTitle>Stop Task</CModalTitle>
     </CModalHeader>
-    <CModalBody>Are you sure you want to stop this task ? </CModalBody>
+    <CModalBody>Are you sure you want to stop this task?</CModalBody>
     <CModalFooter>
-      <CButton
-        color="secondary"
-        @click="
-          () => {
-            isModalVisible = false
-          }
-        "
-      >
+      <CButton color="secondary" @click="isModalVisible = false">
         {{ $t('modal.delete.button.cancel') }}
       </CButton>
       <CButton color="danger" @click="stopTask">Confirm</CButton>
@@ -29,7 +15,19 @@
     <CRow>
       <CCol :sm="12" :lg="12">
         <CRow>
-          <CCol :xs="12">
+          <CCol :xs="2">
+            <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
+              <div class="text-body-secondary small fw-semibold">Project Id:</div>
+              <div class="fs-5">{{ projectId }}</div>
+            </div>
+          </CCol>
+          <CCol :xs="2">
+            <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
+              <div class="text-body-secondary small fw-semibold">Type:</div>
+              <div class="fs-5">{{ taskType }}</div>
+            </div>
+          </CCol>
+          <CCol :xs="8">
             <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
               <div class="text-body-secondary small fw-semibold">Task Id:</div>
               <div class="fs-5">{{ taskId }}</div>
@@ -37,7 +35,7 @@
           </CCol>
         </CRow>
         <hr class="mt-0" />
-        <CRow v-if="!error">
+        <CRow v-if="!errorStatus">
           <div v-if="loading" class="d-grid col-6 mx-auto" align="center">
             <CAlert color="info">
               <CButton color="danger" variant="outline" class="mb-3" @click="openModal"
@@ -45,8 +43,8 @@
               >
               <br />
               <CSpinner color="primary" />
-              <br />Updating task status every 10 seconds...</CAlert
-            >
+              <br />Updating task status every 10 seconds...
+            </CAlert>
           </div>
           <div v-else class="d-grid col-6 mx-auto" align="center">
             <CAlert color="success">
@@ -54,16 +52,15 @@
               <br />Your task has been finished!<br />
               <CButton color="success" variant="outline" class="mb-3" @click="goToProject"
                 >OPEN PROJECT</CButton
-              ></CAlert
-            >
+              >
+            </CAlert>
           </div>
         </CRow>
         <CRow v-else>
           <div class="d-grid col-6 mx-auto" align="center">
             <CAlert color="danger">
-              <CIcon icon="cil-sad" size="xxl" /> <br />Sorry, Your task has been
-              {{ errorStatus }}!</CAlert
-            >
+              <CIcon icon="cil-sad" size="xxl" /> <br />Sorry, Your task has been {{ errorStatus }}!
+            </CAlert>
           </div>
         </CRow>
         <CRow>
@@ -82,7 +79,6 @@
                   <CIcon icon="cil-check-alt" size="xl" />
                 </CAvatar>
                 <br />
-
                 {{ step }}
               </p>
             </div>
@@ -95,6 +91,7 @@
     </CRow>
   </div>
 </template>
+
 <script>
 import { CProgress, CProgressBar } from '@coreui/vue'
 import { onMounted, onUnmounted, ref, computed } from 'vue'
@@ -126,14 +123,12 @@ export default {
     const maxValue = computed(() => props.steps.length)
     const currentStep = ref(0)
     const errorStatus = ref('')
-    const error = ref(false)
-    const activeColor = ref('#95a5a6')
     const loading = ref(true)
-    const mySteps = computed(() => props.steps)
     const progressValue = computed(() => (currentStep.value / maxValue.value) * 100)
     const isModalVisible = ref(false)
     const router = useRouter()
     const projectId = ref('')
+    const taskType = ref('')
     const openModal = () => {
       isModalVisible.value = true
     }
@@ -142,7 +137,8 @@ export default {
       TaskService.revoke({ task_id: taskId })
         .then(() => {
           currentStep.value = 0
-          error.value = true
+          errorStatus.value = 'Revoked'
+
           toast.success(
             t('notification.successfulMessage', {
               entity: t('entity.task'),
@@ -151,7 +147,7 @@ export default {
           )
         })
         .catch(() => {
-          toast.error(t('.errorMessage'))
+          toast.error(t('notification.errorMessage'))
         })
         .finally(() => {
           isModalVisible.value = false
@@ -161,37 +157,24 @@ export default {
     const fetchTaskStatus = () => {
       TaskService.getTaskStatus(props.id)
         .then((response) => {
-          console.log(response)
           projectId.value = response.project
-          //projectId = response.project
-
+          taskType.value = response.type_name
           switch (response.status) {
             case 1: // Pending
-              activeColor.value = '#95a5a6'
               currentStep.value = 1
               break
             case 2: // Started
-              activeColor.value = '#2980b9'
               currentStep.value = 2
               break
             case 3: // Success
               loading.value = false
-              activeColor.value = '#27ae60'
               currentStep.value = 3
               break
             case 4: // Failure
-              loading.value = false
-              errorStatus.value = 'Failed'
-              activeColor.value = '#c0392b'
-              currentStep.value = 0
-              error.value = true
-              break
             case 5: // Revoked
               loading.value = false
-              errorStatus.value = 'Revoked'
-              activeColor.value = '#c0392b'
+              errorStatus.value = response.status === 4 ? 'Failed' : 'Revoked'
               currentStep.value = 0
-              error.value = true
               break
           }
         })
@@ -202,6 +185,7 @@ export default {
           }
         })
     }
+
     onMounted(() => {
       fetchTaskStatus()
       const interval = setInterval(() => {
@@ -212,7 +196,6 @@ export default {
         }
       }, 10000)
 
-      // Clean up the interval when the component is destroyed
       onUnmounted(() => {
         clearInterval(interval)
       })
@@ -221,16 +204,16 @@ export default {
     const goToProject = () => {
       router.push({ name: 'projects.edit', params: { id: projectId.value } })
     }
+
     return {
       taskId,
+      projectId,
+      taskType,
       maxValue,
       progressValue,
       loading,
-      mySteps,
       currentStep,
       errorStatus,
-      activeColor,
-      error,
       openModal,
       isModalVisible,
       stopTask,
@@ -246,17 +229,6 @@ export default {
   justify-content: space-around;
   margin-bottom: 20px;
   position: relative;
-}
-
-.step {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.step.active {
-  background-color: #007bff;
-  color: white;
 }
 
 .step-content {
