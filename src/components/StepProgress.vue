@@ -19,7 +19,10 @@
             <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
               <div class="text-body-secondary small fw-semibold">Project Id:</div>
               <div class="fs-5">
-                <router-link :to="{ name: 'projects.edit', params: { id: projectId.value } }">
+                <router-link
+                  v-if="projectId"
+                  :to="{ name: 'projects.edit', params: { id: projectId } }"
+                >
                   {{ projectId }}
                 </router-link>
               </div>
@@ -205,7 +208,11 @@ export default {
     })
 
     const goToProject = () => {
-      router.push({ name: 'projects.edit', params: { id: projectId.value } })
+      if (projectId.value) {
+        router.push({ name: 'projects.edit', params: { id: projectId.value } })
+      } else {
+        console.error('projectId is missing')
+      }
     }
 
     const getStatusMessage = (status) => {
