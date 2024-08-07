@@ -18,7 +18,11 @@
           <CCol :xs="2">
             <div class="border-start border-start-4 border-start-info py-1 px-3 mb-3">
               <div class="text-body-secondary small fw-semibold">Project Id:</div>
-              <div class="fs-5">{{ projectId }}</div>
+              <div class="fs-5">
+                <router-link :to="{ name: 'projects.edit', params: { id: projectId.value } }">
+                  {{ projectId }}
+                </router-link>
+              </div>
             </div>
           </CCol>
           <CCol :xs="2">
@@ -38,9 +42,9 @@
         <CRow v-if="!errorStatus">
           <div v-if="loading" class="d-grid col-6 mx-auto" align="center">
             <CAlert color="info">
-              <CButton color="danger" variant="outline" class="mb-3" @click="openModal"
-                >STOP TASK</CButton
-              >
+              <CButton color="danger" variant="outline" class="mb-3" @click="openModal">
+                STOP TASK
+              </CButton>
               <br />
               <CSpinner color="primary" />
               <br />Updating task status every 10 seconds...
@@ -49,26 +53,26 @@
           <div v-else class="d-grid col-6 mx-auto" align="center">
             <CAlert color="success">
               <CIcon icon="cil-smile" size="xxl" />
-              <br />Your task has been finished!<br />
-              <CButton color="success" variant="outline" class="mb-3" @click="goToProject"
-                >OPEN PROJECT</CButton
-              >
+              <br />Your task has finished!<br />
+              <CButton color="success" variant="outline" class="mb-3" @click="goToProject">
+                OPEN PROJECT
+              </CButton>
             </CAlert>
           </div>
         </CRow>
         <CRow v-else>
           <div class="d-grid col-6 mx-auto" align="center">
             <CAlert color="danger">
-              <CIcon icon="cil-sad" size="xxl" /> <br />Sorry, Your task has been {{ errorStatus }}!
+              <CIcon icon="cil-sad" size="xxl" /> <br />{{ getStatusMessage(errorStatus) }}
             </CAlert>
           </div>
         </CRow>
         <CRow>
           <div>
             <CProgress class="my-2">
-              <CProgressBar :value="progressValue" :max="maxValue"
-                >{{ progressValue }}%</CProgressBar
-              >
+              <CProgressBar :value="progressValue" :max="maxValue">
+                {{ progressValue }}%
+              </CProgressBar>
             </CProgress>
             <div class="steps">
               <p v-for="(step, index) in steps" :key="index" align="center">
@@ -134,11 +138,10 @@ export default {
     }
 
     const stopTask = () => {
+      currentStep.value = 0
+      errorStatus.value = 5
       TaskService.revoke({ task_id: taskId })
         .then(() => {
-          currentStep.value = 0
-          errorStatus.value = 'Revoked'
-
           toast.success(
             t('notification.successfulMessage', {
               entity: t('entity.task'),
@@ -173,7 +176,7 @@ export default {
             case 4: // Failure
             case 5: // Revoked
               loading.value = false
-              errorStatus.value = response.status === 4 ? 'Failed' : 'Revoked'
+              errorStatus.value = response.status
               currentStep.value = 0
               break
           }
@@ -205,6 +208,17 @@ export default {
       router.push({ name: 'projects.edit', params: { id: projectId.value } })
     }
 
+    const getStatusMessage = (status) => {
+      switch (status) {
+        case 4:
+          return 'Sorry, Your task has failed!'
+        case 5:
+          return 'Sorry, Your task was revoked!'
+        default:
+          return 'Sorry, Your task has encountered an error!'
+      }
+    }
+
     return {
       taskId,
       projectId,
@@ -218,6 +232,7 @@ export default {
       isModalVisible,
       stopTask,
       goToProject,
+      getStatusMessage,
     }
   },
 }
