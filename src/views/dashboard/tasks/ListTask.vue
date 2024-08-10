@@ -36,7 +36,7 @@
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col" class="w-10">Project</CTableHeaderCell>
-                <CTableHeaderCell scope="col" class="w-50">ID</CTableHeaderCell>
+                <CTableHeaderCell scope="col" class="w-50">Task id</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-10">Type</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-10">Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col" class="w-10">Created</CTableHeaderCell>
@@ -50,7 +50,11 @@
                     <CIcon :icon="cilFolder" size="lg" />
                   </router-link>
                 </CTableDataCell>
-                <CTableHeaderCell scope="row">{{ task.task_id }}</CTableHeaderCell>
+                <CTableHeaderCell scope="row">
+                  <router-link :to="{ name: 'task.id', params: { id: task.task_id } }">
+                    {{ task.task_id }}
+                  </router-link>
+                </CTableHeaderCell>
                 <CTableHeaderCell scope="row">{{ task.type_name }}</CTableHeaderCell>
                 <CTableDataCell style="word-break: break-all">
                   <CButton :color="getButtonColor(task.status)" disabled>
