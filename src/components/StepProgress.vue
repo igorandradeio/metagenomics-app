@@ -50,7 +50,7 @@
               </CButton>
               <br />
               <CSpinner color="primary" />
-              <br />Updating task status every 10 seconds...
+              <br />Updating task status every 5 seconds...
             </CAlert>
           </div>
           <div v-else class="d-grid col-6 mx-auto" align="center">
@@ -200,7 +200,7 @@ export default {
         } else {
           clearInterval(interval)
         }
-      }, 10000)
+      }, 5000)
 
       onUnmounted(() => {
         clearInterval(interval)
