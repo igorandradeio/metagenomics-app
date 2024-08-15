@@ -46,10 +46,34 @@ export default class SampleService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.request({ auth: true })
-        .get(`/samples/${id}/download/`, {
+        .get(`/download/sample/${id}/`, {
           responseType: 'blob',
         })
         .then((response) => {
+          // Function to extract the filename from Content-Disposition header
+          const extractFileName = (header) => {
+            const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(header)
+            if (matches != null && matches[1]) {
+              return matches[1].replace(/['"]/g, '')
+            }
+            return 'downloaded_file'
+          }
+
+          // Extract the filename from Content-Disposition header
+          const contentDisposition = response.headers['content-disposition']
+          const fileName = extractFileName(contentDisposition)
+
+          // Create a temporary URL for the Blob and initiate the download
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', fileName)
+
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          window.URL.revokeObjectURL(url)
+
           resolve(response.data)
         })
         .catch((error) => {
