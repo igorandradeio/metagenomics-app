@@ -19,7 +19,7 @@
                     <CLink
                       class="fw-semibold font-xs text-body-secondary"
                       href="#"
-                      @click="download(sample.id, sample.file_name)"
+                      @click="download(sample.id)"
                       rel="noopener norefferer"
                     >
                       Download
@@ -121,16 +121,9 @@ export default {
         })
     })
 
-    const download = (sampleId, fileName) => {
+    const download = (sampleId) => {
       SampleService.download(sampleId)
-        .then((response) => {
-          const FILE = window.URL.createObjectURL(new Blob([response.data]))
-          const docUrl = document.createElement('x')
-          docUrl.href = FILE
-          docUrl.setAttribute('download', fileName)
-          document.body.appendChild(docUrl)
-          docUrl.click()
-        })
+        .then((response) => {})
         .catch((error) => console.error('Error downloading file:', error))
     }
 
