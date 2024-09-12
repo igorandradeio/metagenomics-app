@@ -14,9 +14,9 @@ export default defineConfig(({ mode }) => {
     css: {
       postcss: {
         plugins: [
-          autoprefixer({}) // add options if needed
+          autoprefixer({}), // add options if needed
         ],
-      }
+      },
     },
     resolve: {
       alias: [
@@ -34,19 +34,13 @@ export default defineConfig(({ mode }) => {
           replacement: path.resolve(__dirname, '/src'),
         },
       ],
-      extensions: [
-        '.mjs',
-        '.js',
-        '.ts',
-        '.jsx',
-        '.tsx',
-        '.json',
-        '.vue',
-        '.scss',
-      ],
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.scss'],
     },
     server: {
       port: 3000,
+      hmr: {
+        overlay: false,
+      },
       proxy: {
         // https://vitejs.dev/config/server-options.html
       },
