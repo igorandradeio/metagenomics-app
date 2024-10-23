@@ -56,7 +56,7 @@
           <div v-else class="d-grid col-6 mx-auto" align="center">
             <CAlert color="success">
               <CIcon icon="cil-smile" size="xxl" />
-              <br />Your task has finished!<br />
+              <br />Your task has been finished!<br />
               <CButton color="success" variant="outline" class="mb-3" @click="goToProject">
                 OPEN PROJECT
               </CButton>
