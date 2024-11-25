@@ -5,6 +5,7 @@ export const en = {
     project: 'project',
     sample: 'sample',
     assembly: 'assembly',
+    annotation: 'annotation',
     task: 'task',
   },
   dashboard: {

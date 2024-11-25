@@ -111,6 +111,13 @@ const routes = [
                 meta: { title: 'Assembler' },
                 props: (route) => ({ id: parseInt(route.params.id) }),
               },
+              {
+                path: 'annotation',
+                name: 'annotation',
+                component: () => import('@/views/dashboard/annotation/Annotation.vue'),
+                meta: { title: 'Annotation' },
+                props: (route) => ({ id: parseInt(route.params.id) }),
+              },
             ],
           },
           {
