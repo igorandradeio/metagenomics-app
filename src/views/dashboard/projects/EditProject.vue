@@ -89,9 +89,17 @@
       </CCard>
     </CCol>
   </CRow>
+
   <ListSample :id="projectId" />
-  <AssemblerButton :id="projectId" />
   <ListAssembly :id="projectId" />
+
+  <LargeButton :id="projectId" title="Assembler" description="Run Assembler" to="assembler" />
+  <LargeButton
+    :id="projectId"
+    title="Metagenome anotation"
+    description="Run Annotation"
+    to="annotation"
+  />
 </template>
 
 <script>
@@ -102,14 +110,14 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import ListSample from '@/views/dashboard/samples/ListSample.vue'
 import ListAssembly from '@/views/dashboard/assemblies/ListAssembly.vue'
-import AssemblerButton from '@/views/dashboard/assemblies/AssemblerButton.vue'
+import LargeButton from '@/components/LargeButton.vue'
 
 export default {
   name: 'EditProject',
   components: {
     ListSample,
     ListAssembly,
-    AssemblerButton,
+    LargeButton,
   },
   props: {
     id: {
