@@ -99,7 +99,7 @@
     :id="projectId"
     title="Metagenome analysis"
     description="Run analysis"
-    to="annotation"
+    to="analysis"
   />
 </template>
 
