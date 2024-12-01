@@ -19,4 +19,23 @@ export default class AnnotationService extends BaseService {
         })
     })
   }
+
+  static async getAnalysis(id) {
+    const token = await localStorage.getItem(TOKEN_NAME)
+
+    if (!token) {
+      return Promise.reject('Token not found')
+    }
+
+    return new Promise((resolve, reject) => {
+      this.request({ auth: true })
+        .get(`/projects/${id}/files`)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
 }

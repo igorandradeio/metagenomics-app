@@ -73,9 +73,7 @@
         <CRow>
           <div>
             <CProgress class="my-2">
-              <CProgressBar :value="progressValue" :max="maxValue">
-                {{ progressValue }}%
-              </CProgressBar>
+              <CProgressBar :value="progressValue" :max="maxValue"> </CProgressBar>
             </CProgress>
             <div class="steps">
               <p v-for="(step, index) in steps" :key="index" align="center">

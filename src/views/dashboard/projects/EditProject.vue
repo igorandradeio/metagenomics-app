@@ -92,13 +92,14 @@
 
   <ListSample :id="projectId" />
   <ListAssembly :id="projectId" />
+  <ListAnalysis :id="projectId" />
 
-  <LargeButton :id="projectId" title="Assembler" description="Run Assembler" to="assembler" />
+  <LargeButton :id="projectId" title="Assembler" description="Run assembler" to="assembler" />
   <LargeButton
     :id="projectId"
-    title="Metagenome anotation"
-    description="Run Annotation"
-    to="annotation"
+    title="Metagenome analysis"
+    description="Run analysis"
+    to="analysis"
   />
 </template>
 
@@ -110,6 +111,7 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import ListSample from '@/views/dashboard/samples/ListSample.vue'
 import ListAssembly from '@/views/dashboard/assemblies/ListAssembly.vue'
+import ListAnalysis from '@/views/dashboard/assemblies/ListAnalysis.vue'
 import LargeButton from '@/components/LargeButton.vue'
 
 export default {
@@ -117,6 +119,7 @@ export default {
   components: {
     ListSample,
     ListAssembly,
+    ListAnalysis,
     LargeButton,
   },
   props: {
