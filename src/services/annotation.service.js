@@ -20,7 +20,7 @@ export default class AnnotationService extends BaseService {
     })
   }
 
-  static async getAnalysis(id) {
+  static async getAnalysis(id, path) {
     const token = await localStorage.getItem(TOKEN_NAME)
 
     if (!token) {
@@ -29,7 +29,7 @@ export default class AnnotationService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.request({ auth: true })
-        .get(`/projects/${id}/files`)
+        .get(`/projects/${id}/analysis/${path}/`)
         .then((response) => {
           resolve(response.data)
         })

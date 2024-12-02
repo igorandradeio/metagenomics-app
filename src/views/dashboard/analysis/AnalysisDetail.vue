@@ -2,18 +2,41 @@
   <div>
     <h2>Files</h2>
     <ul>
-      <directory-item v-for="(item, index) in directoryStructure" :key="index" :item="item" />
+      <li v-for="(item, index) in directoryStructure" :key="index">
+        <a v-if="item.is_directory" @click.prevent="navigateToDirectory(item.path)">
+          {{ item.name }}
+        </a>
+        <span v-else>{{ item.name }}</span>
+      </li>
     </ul>
+    <CTable hover>
+      <CTableHead>
+        <CTableRow>
+          <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Size</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+        </CTableRow>
+      </CTableHead>
+      <CTableBody>
+        <CTableRow v-for="(item, index) in directoryStructure" :key="index">
+          <CTableHeaderCell scope="row">{{ item.name }}</CTableHeaderCell>
+          <CTableDataCell></CTableDataCell>
+          <CTableDataCell>
+            <span v-if="item.is_directory"> ... </span>
+            <span v-else>
+              <CButton color="primary" variant="outline">Download</CButton>
+            </span>
+          </CTableDataCell>
+        </CTableRow>
+      </CTableBody>
+    </CTable>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import AnnotationService from '@/services/annotation.service'
-import { useI18n } from 'vue-i18n'
-import { useToast } from 'vue-toastification'
-import { useRouter } from 'vue-router'
-import DirectoryItem from '@/components/DirectoryItem.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: 'AnalysisDetail',
@@ -22,37 +45,42 @@ export default {
       required: true,
     },
   },
-  components: {
-    DirectoryItem,
-  },
   setup(props) {
-    const { t } = useI18n({ useScope: 'global' })
+    const router = useRouter()
+    const route = useRoute()
     const loading = ref(true)
     const directoryStructure = ref([])
 
-    const projectId = props.id
-
-    const fetchDirectoryStructure = () => {
-      AnnotationService.getAnalysis(projectId)
+    const fetchDirectoryStructure = (path = '') => {
+      const projectId = props.id
+      AnnotationService.getAnalysis(projectId, path)
         .then((response) => {
-          console.log(response)
           directoryStructure.value = response
         })
         .catch((error) => {
           console.log(error)
-
-          if (error.status === 404) {
-            console.log(response)
-          }
         })
     }
 
-    onMounted(fetchDirectoryStructure)
+    const navigateToDirectory = (path) => {
+      router.push(`/projects/${props.id}/analysis/view/${path}/`)
+    }
+
+    onMounted(() => {
+      fetchDirectoryStructure(route.params.path || '')
+    })
+
+    watch(
+      () => route.params.path,
+      (newPath) => {
+        fetchDirectoryStructure(newPath)
+      },
+    )
 
     return {
-      loading,
-      projectId,
       directoryStructure,
+      loading,
+      navigateToDirectory,
     }
   },
 }
