@@ -119,12 +119,12 @@ const routes = [
                 props: (route) => ({ id: parseInt(route.params.id) }),
               },
               {
-                path: 'analysis/view',
+                path: 'analysis/:path',
                 name: 'analysis.view',
                 component: () => import('@/views/dashboard/analysis/AnalysisDetail.vue'),
-                meta: { title: 'Analysis analysis' },
-                props: (route) => ({ id: parseInt(route.params.id) }),
-              },
+                meta: { title: 'Analysis Detail' },
+                props: (route) => ({ id: parseInt(route.params.id), path: route.params.path }),
+              }
             ],
           },
           {
