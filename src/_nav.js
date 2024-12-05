@@ -4,10 +4,6 @@ export default [
     name: 'dashboard.sidebar.dashboard',
     to: 'dashboard.home',
     icon: 'cil-speedometer',
-    badge: {
-      color: 'primary',
-      text: 'NEW',
-    },
   },
   {
     component: 'CNavGroup',
@@ -31,7 +27,7 @@ export default [
     component: 'CNavGroup',
     name: 'dashboard.sidebar.task.title',
     to: '#',
-    icon: 'cil-folder-open',
+    icon: 'cil-clipboard',
     items: [
       {
         component: 'CNavItem',

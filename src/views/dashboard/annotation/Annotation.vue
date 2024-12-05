@@ -62,7 +62,6 @@ export default {
 
     const runAnnotation = () => {
       buttonDisabled.value = true
-      alert(projectId)
 
       AnnotationService.annotation(projectId)
         .then((response) => {
