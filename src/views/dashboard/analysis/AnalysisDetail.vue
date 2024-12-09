@@ -5,7 +5,6 @@
       <CTab aria-controls="profile-tab-pane" :itemKey="2">Quality control</CTab>
       <CTab aria-controls="contact-tab-pane" :itemKey="3">Taxonomic analysis</CTab>
       <CTab aria-controls="contact-tab-pane" :itemKey="4">Annotation</CTab>
-      <CTab aria-controls="disabled-tab-pane" :itemKey="5">Download</CTab>
     </CTabList>
     <CTabContent>
       <CTabPanel class="py-3" aria-labelledby="home-tab-pane" :itemKey="1">
@@ -71,31 +70,6 @@
         ></iframe>
       </CTabPanel>
       <CTabPanel class="py-3" aria-labelledby="contact-tab-pane" :itemKey="4"> </CTabPanel>
-      <CTabPanel class="py-3" aria-labelledby="contact-tab-pane" :itemKey="5">
-        <h5>Sequence data</h5>
-        <CTable striped>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col" class="w-25">Name</CTableHeaderCell>
-              <CTableHeaderCell scope="col" class="w-25">Action</CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            <CTableRow>
-              <CTableDataCell>Otto</CTableDataCell>
-              <CTableDataCell
-                ><CButton color="info" variant="outline">Download</CButton></CTableDataCell
-              >
-            </CTableRow>
-            <CTableRow>
-              <CTableDataCell>Thornton</CTableDataCell>
-              <CTableDataCell
-                ><CButton color="info" variant="outline">Download</CButton></CTableDataCell
-              >
-            </CTableRow>
-          </CTableBody>
-        </CTable>
-      </CTabPanel>
     </CTabContent>
   </CTabs>
 </template>
