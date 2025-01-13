@@ -21,6 +21,7 @@
                         type="file"
                         aria-label="Single-end read file"
                         @change="uploadFileR1"
+                        accept=".fastq.gz"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
@@ -40,6 +41,7 @@
                         type="file"
                         aria-label="Forward Read File (R1)"
                         @change="uploadFileR1"
+                        accept=".fastq.gz"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
@@ -55,6 +57,7 @@
                         type="file"
                         aria-label="Reverse Read File (R2)"
                         @change="uploadFileR2"
+                        accept=".fastq.gz"
                         required
                       />
                       <CFormFeedback invalid>This field is required</CFormFeedback>
