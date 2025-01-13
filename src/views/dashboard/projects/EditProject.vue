@@ -91,10 +91,8 @@
   </CRow>
 
   <ListSample :id="projectId" />
-  <ListAssembly :id="projectId" />
   <ListAnalysis :id="projectId" />
 
-  <LargeButton :id="projectId" title="Assembler" description="Run assembler" to="assembler" />
   <LargeButton
     :id="projectId"
     title="Metagenome analysis"
@@ -110,7 +108,6 @@ import ProjectService from '@/services/project.service'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import ListSample from '@/views/dashboard/samples/ListSample.vue'
-import ListAssembly from '@/views/dashboard/assemblies/ListAssembly.vue'
 import ListAnalysis from '@/views/dashboard/assemblies/ListAnalysis.vue'
 import LargeButton from '@/components/LargeButton.vue'
 
@@ -118,7 +115,6 @@ export default {
   name: 'EditProject',
   components: {
     ListSample,
-    ListAssembly,
     ListAnalysis,
     LargeButton,
   },
