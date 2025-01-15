@@ -8,6 +8,5 @@ tests/e2e/reports/
 .env.*.local
 
 # dependencies
-package-lock.json
 yarn.lock
 .env
