@@ -7,7 +7,7 @@
    viewBox="0 0 25.399999 8.4666669"
    version="1.1"
    id="svg1242"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,14 +26,16 @@
      units="px"
      inkscape:zoom="2"
      inkscape:cx="-39.25"
-     inkscape:cy="22.5"
-     inkscape:window-width="1854"
-     inkscape:window-height="1043"
-     inkscape:window-x="66"
-     inkscape:window-y="0"
+     inkscape:cy="23.25"
+     inkscape:window-width="1864"
+     inkscape:window-height="1011"
+     inkscape:window-x="56"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     width="100px" />
+     width="100px"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <defs
      id="defs1239" />
   <g
@@ -42,16 +44,16 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:5.11528px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.289373"
+       style="font-style:normal;font-weight:normal;font-size:3.88056px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.289373"
        x="8.2914429"
        y="5.7371202"
        id="text90555"><tspan
          sodipodi:role="line"
          id="tspan90553"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.11528px;font-family:'Ubuntu Condensed';-inkscape-font-specification:'Ubuntu Condensed, ';fill:#ffffff;stroke-width:0.289373"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:'Ubuntu Sans';-inkscape-font-specification:'Ubuntu Sans';fill:#ffffff;stroke-width:0.289373"
          x="8.2914429"
          y="5.7371202">Meta<tspan
-   style="fill:#1bbd93;fill-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88056px;font-family:'Ubuntu Sans';-inkscape-font-specification:'Ubuntu Sans';fill:#1bbd93;fill-opacity:1"
    id="tspan2901">Soil </tspan></tspan></text>
     <g
        id="g11665">
