@@ -34,7 +34,7 @@
                 <router-link :to="{ name: 'samples.create', params: { id: projectId } }">
                   <div class="d-grid gap-2">
                     <CButton color="info" variant="outline"
-                      ><CIcon icon="cil-cloud-upload" size="xl" /> Resend Sample</CButton
+                      ><CIcon icon="cil-cloud-upload" size="xl" /> Send a new sample</CButton
                     >
                   </div>
                 </router-link>
@@ -74,7 +74,7 @@
                     <CCardBody>
                       <CCardText
                         ><CIcon icon="cil-cloud-upload" size="xl" />
-                        <strong> Upload your sample </strong>
+                        <strong> Upload your first sample </strong>
                         <hr />
                         <small> Add a new sample</small>
                       </CCardText>
