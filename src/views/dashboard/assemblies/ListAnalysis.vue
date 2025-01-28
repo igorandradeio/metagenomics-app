@@ -10,16 +10,17 @@
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">Run accession</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Sample sheet</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Pipeline version</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   <CTableRow>
-                    <CTableHeaderCell scope="row">{{ analysis.id }}</CTableHeaderCell>
-                    <CTableDataCell>
-                      <CButton color="info" variant="outline">Download</CButton>
-                    </CTableDataCell>
+                    <CTableHeaderCell scope="row">
+                      <router-link
+                        :to="{ name: 'analysis.view', params: { id: projectId, path: 'view' } }"
+                        ><h5>{{ analysis.id }}</h5></router-link
+                      >
+                    </CTableHeaderCell>
                     <CTableDataCell>nf-core/mag V.3.2.1</CTableDataCell>
                   </CTableRow>
                 </CTableBody>
