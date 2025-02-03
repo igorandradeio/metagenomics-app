@@ -1,33 +1,59 @@
 <template>
   <CRow>
-    <CCol :xs="12">
+    <CCol :md="12">
       <CCard class="mb-4">
-        <CCardHeader> <strong>Associated analysis </strong> </CCardHeader>
+        <CCardHeader> <strong>Results</strong> </CCardHeader>
         <CCardBody>
-          <CCol :md="12">
-            <div v-if="hasAnalysis">
-              <CTable>
-                <CTableHead>
-                  <CTableRow>
-                    <CTableHeaderCell scope="col">Run accession</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Pipeline version</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">
-                      <router-link
-                        :to="{ name: 'analysis.view', params: { id: projectId, path: 'view' } }"
-                        ><h5>{{ analysis.id }}</h5></router-link
-                      >
-                    </CTableHeaderCell>
-                    <CTableDataCell>nf-core/mag V.3.2.1</CTableDataCell>
-                  </CTableRow>
-                </CTableBody>
-              </CTable>
-            </div>
-            <div v-else>No analysis</div>
-          </CCol>
+          <div v-if="hasSample">
+            <CRow>
+              <CCol>
+                <CCard class="mb-4 border-primary border-top-3 border-top-primary">
+                  <CCardHeader>
+                    <strong>Assembly</strong>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol>
+                        <CButton as="a" color="primary" href="#" role="button"
+                          >Open Assembly</CButton
+                        >
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+
+            <CRow>
+              <CCol :md="12">
+                <CCard class="mb-4 border-primary border-top-3 border-top-primary">
+                  <CCardHeader>
+                    <strong>Sample analysis</strong>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol :md="12" v-for="pair in sampleList" :key="pair.pair_id">
+                        <CCard class="mb-4">
+                          <CCardHeader>
+                            <strong>Sample {{ pair.pair_id }}</strong>
+                          </CCardHeader>
+                          <CCardBody>
+                            <CRow>
+                              <CCol>
+                                <CButton as="a" color="primary" href="#" role="button"
+                                  >Open annotation</CButton
+                                >
+                              </CCol>
+                            </CRow>
+                          </CCardBody>
+                        </CCard>
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+          </div>
         </CCardBody>
       </CCard>
     </CCol>
@@ -35,8 +61,8 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref } from 'vue'
-import AnalysisService from '@/services/analysis.service.js'
+import { onMounted, ref } from 'vue'
+import SampleService from '@/services/sample.service'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -49,35 +75,38 @@ export default {
   setup(props) {
     const { t } = useI18n({ useScope: 'global' })
     const loading = ref(true)
-    const hasAnalysis = ref(false)
-
     const projectId = props.id
-    const analysis = reactive({
-      id: '',
-      date: '',
-      project_id: '',
-    })
+    const sampleList = ref([])
+    const hasSample = ref(false)
 
     onMounted(() => {
-      AnalysisService.getAnalysisByProject(projectId)
+      SampleService.getSamplesByProject(projectId)
         .then((response) => {
-          hasAnalysis.value = true
-          analysis.id = response.id
-          analysis.date = response.date
-          analysis.project_id = response.project_id
-          console.log(response)
+          if (response.length > 0) {
+            hasSample.value = true
+            sampleList.value = response
+          } else {
+            hasSample.value = false
+          }
         })
-        .catch((error) => error)
+        .catch((error) => console.error('Error:', error))
         .finally(() => {
           loading.value = false
         })
     })
 
+    const download = (sampleId) => {
+      SampleService.download(sampleId)
+        .then((response) => {})
+        .catch((error) => console.error('Error downloading file:', error))
+    }
+
     return {
       loading,
-      analysis,
+      sampleList,
       projectId,
-      hasAnalysis,
+      download,
+      hasSample,
     }
   },
 }
