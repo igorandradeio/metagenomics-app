@@ -6,27 +6,38 @@
         <CCardBody>
           <div v-if="hasSample">
             <CRow>
-              <CCol :md="6" v-for="sample in sampleList" :key="sample.id">
-                <CWidgetStatsF
-                  color="primary"
-                  :title="'Date: ' + sample.date"
-                  :value="sample.file_name"
-                >
-                  <template #icon>
-                    <CIcon icon="cil-file" size="xl" />
-                  </template>
-                  <template #footer>
-                    <CLink
-                      class="fw-semibold font-xs text-body-secondary"
-                      href="#"
-                      @click="download(sample.id)"
-                      rel="noopener norefferer"
-                    >
-                      Download
-                      <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
-                    </CLink>
-                  </template>
-                </CWidgetStatsF>
+              <CCol :md="12" v-for="pair in sampleList" :key="pair.pair_id">
+                <CCard class="mb-4">
+                  <CCardHeader>
+                    <strong>Sample {{ pair.pair_id }}</strong>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol :md="6" v-for="sample in pair.samples" :key="sample.id">
+                        <CWidgetStatsF
+                          color="primary"
+                          :title="'Date: ' + sample.date"
+                          :value="sample.file_name"
+                        >
+                          <template #icon>
+                            <CIcon icon="cil-file" size="xl" />
+                          </template>
+                          <template #footer>
+                            <CLink
+                              class="fw-semibold font-xs text-body-secondary"
+                              href="#"
+                              @click="download(sample.id)"
+                              rel="noopener norefferer"
+                            >
+                              Download
+                              <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
+                            </CLink>
+                          </template>
+                        </CWidgetStatsF>
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
               </CCol>
             </CRow>
             <CRow class="mt-3">
@@ -112,10 +123,14 @@ export default {
     onMounted(() => {
       SampleService.getSamplesByProject(projectId)
         .then((response) => {
-          hasSample.value = true
-          sampleList.value = response
+          if (response.length > 0) {
+            hasSample.value = true
+            sampleList.value = response
+          } else {
+            hasSample.value = false
+          }
         })
-        .catch((error) => error)
+        .catch((error) => console.error('Error:', error))
         .finally(() => {
           loading.value = false
         })
