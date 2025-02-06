@@ -14,8 +14,15 @@
                   <CCardBody>
                     <CRow>
                       <CCol>
-                        <CButton as="a" color="primary" href="#" role="button"
-                          >Open Assembly</CButton
+                        <router-link
+                          :to="{
+                            name: 'analysis.assembly',
+                            params: { id: projectId, path: 'assembly' },
+                          }"
+                        >
+                          <CButton as="a" color="primary" href="#" role="button"
+                            >Open Assembly</CButton
+                          ></router-link
                         >
                       </CCol>
                     </CRow>
@@ -40,8 +47,15 @@
                           <CCardBody>
                             <CRow>
                               <CCol>
-                                <CButton as="a" color="primary" href="#" role="button"
-                                  >Open annotation</CButton
+                                <router-link
+                                  :to="{
+                                    name: 'analysis.result',
+                                    query: { id: projectId, pairId: pair.pair_id },
+                                  }"
+                                >
+                                  <CButton as="a" color="primary" href="#" role="button"
+                                    >Open Analysis</CButton
+                                  ></router-link
                                 >
                               </CCol>
                             </CRow>
