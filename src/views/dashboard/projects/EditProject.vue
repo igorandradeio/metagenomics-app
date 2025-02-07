@@ -95,7 +95,7 @@
 
   <LargeButton
     :id="projectId"
-    title="Metagenome analysis"
+    title="Run Metagenome Analysis"
     description="Run analysis"
     to="analysis"
   />

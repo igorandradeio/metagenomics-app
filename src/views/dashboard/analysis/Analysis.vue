@@ -97,14 +97,20 @@
               </CAlert>
             </div>
           </div>
+          <CFormCheck id="check" label="Use these parameters." v-model="checked" />
+          <div>
+            Note: If you do not select them, the analysis will run with the MEGAHIT default
+            parameters of the MAG pipeline.
+          </div>
         </CCardBody>
       </CCard>
     </CCol>
   </CRow>
+
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> <strong>Assembly and annotation of metagenomes</strong> </CCardHeader>
+        <CCardHeader> <strong>Run Metagenome Analysis</strong> </CCardHeader>
         <CCardBody>
           <div class="d-grid gap-2">
             <CButton :disabled="buttonDisabled" color="primary" @click="runAnnotation">Run</CButton>
