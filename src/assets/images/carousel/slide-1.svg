@@ -7,8 +7,8 @@
    width="1920"
    height="1080"
    viewBox="0 0 1920 1080"
-   sodipodi:docname="slide1.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="slide-1.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,20 +25,22 @@
      inkscape:pagecheckerboard="0"
      showgrid="false"
      inkscape:zoom="0.30740741"
-     inkscape:cx="821.38554"
-     inkscape:cy="653.85542"
-     inkscape:window-width="1854"
-     inkscape:window-height="1043"
-     inkscape:window-x="66"
-     inkscape:window-y="0"
+     inkscape:cx="824.63855"
+     inkscape:cy="658.73493"
+     inkscape:window-width="1864"
+     inkscape:window-height="1011"
+     inkscape:window-x="56"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g8" />
+     inkscape:current-layer="g8"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <g
      inkscape:groupmode="layer"
      inkscape:label="Image"
      id="g8">
     <rect
-       style="fill:#008080;fill-opacity:1;stroke-width:3.12945"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:3.12945"
        id="rect881"
        width="1920"
        height="1080"
@@ -47,14 +49,16 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:157.379px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:8.90295"
-       x="676.58655"
-       y="517.45599"
+       x="686.78912"
+       y="530.66937"
        id="text90555"><tspan
          sodipodi:role="line"
          id="tspan90553"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:157.379px;font-family:'Ubuntu Condensed';-inkscape-font-specification:'Ubuntu Condensed, ';fill:#1bbd93;fill-opacity:1;stroke-width:8.90295"
-         x="676.58655"
-         y="517.45599">MetaSoil Insight</tspan></text>
+         x="686.78912"
+         y="530.66937"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+   id="tspan954">MetaSoil</tspan> </tspan></text>
     <path
        fill="#000000"
        opacity="1"

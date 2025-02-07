@@ -2,7 +2,8 @@
   <CTabs :activeItemKey="1">
     <CTabList variant="underline-border">
       <CTab aria-controls="home-tab-pane" :itemKey="1">Assembly</CTab>
-      <CTab aria-controls="profile-tab-pane" :itemKey="2">Quality control</CTab>
+      <CTab aria-controls="profile-tab-pane" :itemKey="2">QUAST</CTab>
+      <CTab aria-controls="profile-tab-pane" :itemKey="3">Multiqc</CTab>
     </CTabList>
     <CTabContent>
       <CTabPanel class="py-3" aria-labelledby="home-tab-pane" :itemKey="1">
@@ -58,6 +59,11 @@
           sandbox="allow-scripts allow-same-origin"
         ></iframe>
       </CTabPanel>
+      <CTabPanel class="py-3" aria-labelledby="profile-tab-pane" :itemKey="3">
+        <CButton as="a" color="primary" :href="multiqc" target="_blank" role="button"
+          >Open multiqc</CButton
+        >
+      </CTabPanel>
     </CTabContent>
   </CTabs>
 </template>
@@ -80,6 +86,7 @@ export default {
     const qc = ref('')
     const assembly = ref('')
     const icarus = ref('')
+    const multiqc = ref('')
 
     const projectId = props.id
 
@@ -87,6 +94,7 @@ export default {
       qc.value = `${urlBase}${projectId}/analysis/Assembly/MEGAHIT/QC/group-0/QUAST/report.html`
       assembly.value = `${urlBase}${projectId}/analysis/Assembly/MEGAHIT/MEGAHIT-group-0.contigs.fa.gz`
       icarus.value = `${urlBase}${projectId}/analysis/Assembly/MEGAHIT/QC/group-0/QUAST/icarus_viewers/contig_size_viewer.html`
+      multiqc.value = `${urlBase}${projectId}/analysis/multiqc/multiqc_report.html#general_stats`
     })
 
     return {
@@ -95,6 +103,7 @@ export default {
       qc,
       assembly,
       icarus,
+      multiqc,
     }
   },
 }
