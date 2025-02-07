@@ -122,7 +122,7 @@ const routes = [
                 path: 'analysis/result',
                 name: 'analysis.result',
                 component: () => import('@/views/dashboard/analysis/AnalysisDetail.vue'),
-                meta: { title: 'Analysis Detail.' },
+                meta: { title: 'Taxonomic analysis' },
                 props: (route) => ({
                   id: route.query.id,
                   pairId: route.query.pairId,
@@ -132,14 +132,14 @@ const routes = [
                 path: 'analysis/assembly',
                 name: 'analysis.assembly',
                 component: () => import('@/views/dashboard/analysis/AssemblyDetail.vue'),
-                meta: { title: 'Assembly Detail' },
+                meta: { title: 'Assembly' },
                 props: (route) => ({ id: parseInt(route.params.id), path: route.params.path }),
               },
               {
                 path: 'analysis/annotation',
                 name: 'analysis.annotation',
                 component: () => import('@/views/dashboard/analysis/AnnotationDetail.vue'),
-                meta: { title: 'Assembly Detail' },
+                meta: { title: 'Prodigal Gene Prediction' },
                 props: (route) => ({ id: parseInt(route.params.id) }),
               }
             ],
