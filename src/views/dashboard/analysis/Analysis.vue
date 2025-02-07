@@ -110,7 +110,7 @@
   <CRow>
     <CCol :xs="12">
       <CCard class="mb-4">
-        <CCardHeader> <strong>Assembly and annotation of metagenomes</strong> </CCardHeader>
+        <CCardHeader> <strong>Run Metagenome Analysis</strong> </CCardHeader>
         <CCardBody>
           <div class="d-grid gap-2">
             <CButton :disabled="buttonDisabled" color="primary" @click="runAnnotation">Run</CButton>
