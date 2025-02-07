@@ -32,6 +32,32 @@
             </CRow>
 
             <CRow>
+              <CCol>
+                <CCard class="mb-4 border-primary border-top-3 border-top-primary">
+                  <CCardHeader>
+                    <strong>Gene Prediction</strong>
+                  </CCardHeader>
+                  <CCardBody>
+                    <CRow>
+                      <CCol>
+                        <router-link
+                          :to="{
+                            name: 'analysis.annotation',
+                            params: { id: projectId },
+                          }"
+                        >
+                          <CButton as="a" color="primary" href="#" role="button"
+                            >Open Gene Prediction</CButton
+                          ></router-link
+                        >
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+              </CCol>
+            </CRow>
+
+            <CRow>
               <CCol :md="12">
                 <CCard class="mb-4 border-primary border-top-3 border-top-primary">
                   <CCardHeader>
