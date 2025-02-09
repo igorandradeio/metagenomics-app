@@ -59,11 +59,6 @@
                         <span v-else>Login</span>
                       </CButton>
                     </CCol>
-                    <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0">
-                        {{ $t('formLogin.forgotPassword') }}
-                      </CButton>
-                    </CCol>
                   </CRow>
                 </CForm>
               </CCardBody>
