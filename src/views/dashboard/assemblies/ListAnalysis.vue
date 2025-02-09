@@ -80,7 +80,7 @@
                                   }"
                                 >
                                   <CButton as="a" color="primary" href="#" role="button"
-                                    >Open Analysis</CButton
+                                    >Open Taxonomic Classification</CButton
                                   ></router-link
                                 >
                               </CCol>
