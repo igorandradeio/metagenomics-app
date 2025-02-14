@@ -14,43 +14,7 @@
               <CRow>
                 <CCol :sm="6" :xl="6" :xxl="6">
                   <CWidgetStatsF color="primary">
-                    <template #value><h6>Predicted proteins</h6></template>
-                    <template #icon>
-                      <CIcon icon="cil-file" size="xl" />
-                    </template>
-
-                    <template #footer>
-                      <CLink
-                        class="fw-semibold font-xs text-body-secondary"
-                        :href="prodigal.predicted_proteins"
-                        rel="noopener norefferer"
-                      >
-                        Download
-                        <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
-                      </CLink>
-                    </template>
-                  </CWidgetStatsF>
-                  <br />
-                  <CWidgetStatsF color="primary">
-                    <template #value><h6>Predicted coding sequences</h6></template>
-                    <template #icon>
-                      <CIcon icon="cil-file" size="xl" />
-                    </template>
-
-                    <template #footer>
-                      <CLink
-                        class="fw-semibold font-xs text-body-secondary"
-                        :href="prodigal.predicted_coding_sequences"
-                        rel="noopener norefferer"
-                      >
-                        Download
-                        <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
-                      </CLink>
-                    </template>
-                  </CWidgetStatsF>
-                  <br />
-                  <CWidgetStatsF color="primary">
-                    <template #value><h6>Predicted gene annotations</h6></template>
+                    <template #value><h6>Prodigal Gene Prediction</h6></template>
                     <template #icon>
                       <CIcon icon="cil-file" size="xl" />
                     </template>
@@ -59,24 +23,6 @@
                       <CLink
                         class="fw-semibold font-xs text-body-secondary"
                         :href="prodigal.predicted_gene_annotations"
-                        rel="noopener norefferer"
-                      >
-                        Download
-                        <CIcon icon="cil-arrow-right" class="ms-auto" width="16" />
-                      </CLink>
-                    </template>
-                  </CWidgetStatsF>
-                  <br />
-                  <CWidgetStatsF color="primary">
-                    <template #value><h6>Detailed prediction summary</h6></template>
-                    <template #icon>
-                      <CIcon icon="cil-file" size="xl" />
-                    </template>
-
-                    <template #footer>
-                      <CLink
-                        class="fw-semibold font-xs text-body-secondary"
-                        :href="prodigal.detailed_prediction_summary"
                         rel="noopener norefferer"
                       >
                         Download
